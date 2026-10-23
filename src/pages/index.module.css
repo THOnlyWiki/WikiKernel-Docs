@@ -88,6 +88,7 @@
 
 .window {
   overflow: hidden;
+  max-width: 100%;
   border: 1px solid var(--ifm-color-emphasis-200);
   border-radius: 18px;
   background: var(--ifm-background-surface-color);
@@ -435,10 +436,15 @@
   flex-shrink: 0;
 }
 
+.heroCopy,
+.heroVisual {
+  min-width: 0;
+}
+
 @media (max-width: 996px) {
   .heroInner,
   .codeSection {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .heroVisual {
@@ -464,6 +470,16 @@
 
   .heroInner {
     gap: 2.2rem;
+    width: 100%;
+  }
+
+  .heroCopy h1 {
+    font-size: clamp(2.1rem, 10.5vw, 3rem);
+    overflow-wrap: anywhere;
+  }
+
+  .lead {
+    overflow-wrap: anywhere;
   }
 
   .heroVisual {
