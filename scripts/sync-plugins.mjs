@@ -122,7 +122,13 @@ function firstDescription(body) {
     paragraph.push(line);
     if (line.endsWith('。') || line.endsWith('.')) break;
   }
-  return oneLine(paragraph.join(' ')).slice(0, 220);
+  const text = oneLine(paragraph.join(' '))
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/<[^>]+>/g, '')
+    .replace(/[*_`~]/g, '')
+    .replace(/\s+([，。；：！？])/g, '$1')
+    .trim();
+  return text.length > 180 ? `${text.slice(0, 180)}…` : text;
 }
 
 function rewriteLinks(body, id) {

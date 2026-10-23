@@ -2,7 +2,7 @@
 title: "variables（MediaWiki Variables 扩展移植）"
 sidebar_label: "variables"
 sidebar_position: 22
-description: "页面级变量的解析器函数 —— 对应 MediaWiki 的 [Variables](https://www.mediawiki.org/wiki/Extension:Variables) 扩展（第三方扩展）。"
+description: "页面级变量的解析器函数 —— 对应 MediaWiki 的 Variables 扩展（第三方扩展）。"
 ---
 
 <!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->

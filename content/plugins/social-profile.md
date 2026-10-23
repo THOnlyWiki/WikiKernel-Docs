@@ -2,7 +2,7 @@
 title: "social-profile（用户交互移植：头像上传 + 用户间私信）"
 sidebar_label: "social-profile"
 sidebar_position: 36
-description: "原 core 内置能力的插件化：**用户页头像上传**（仿 MediaWiki SocialProfile 的资料卡）与 **用户间私信**（`特殊:私信` / `Special:Messages`）。开关沿用 `features.social-profile`（默认开启）。"
+description: "原 core 内置能力的插件化：用户页头像上传（仿 MediaWiki SocialProfile 的资料卡）与 用户间私信（特殊:私信 / Special:Messages）。开关沿用 features.social-profile（默认开启）。"
 ---
 
 <!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->

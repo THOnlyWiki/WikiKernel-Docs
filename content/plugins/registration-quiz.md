@@ -2,7 +2,7 @@
 title: "registration-quiz（注册问答验证扩展移植）"
 sidebar_label: "registration-quiz"
 sidebar_position: 23
-description: "注册页的**问答验证**：推荐 `registration.quiz`，一行一道题，题目和该题的多个答案用 `|` 分隔； 同一题可以配置多个可接受答案。注册页每次从题库里**随机抽一道**（并带回题目下标）， 答对该题任意一个答案即可注册（仿 MediaWiki 的 QuestyCaptcha 思路）。"
+description: "注册页的问答验证：推荐 registration.quiz，一行一道题，题目和该题的多个答案用 | 分隔； 同一题可以配置多个可接受答案。注册页每次从题库里随机抽一道（并带回题目下标）， 答对该题任意一个答案即可注册（仿 MediaWiki 的 QuestyCaptcha 思路）。"
 ---
 
 <!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->

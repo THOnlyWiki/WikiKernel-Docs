@@ -2,7 +2,7 @@
 title: "user-merge（MediaWiki UserMerge 扩展移植）"
 sidebar_label: "user-merge"
 sidebar_position: 37
-description: "**核查员专用**：把源账号的数据（编辑历史 / 日志 / 权限 / 文件）归入目标账号，可选删除源账号； 写入 `usermerge` 类型日志。用户页（`用户:源`）**不会被自动移动**。"
+description: "核查员专用：把源账号的数据（编辑历史 / 日志 / 权限 / 文件）归入目标账号，可选删除源账号； 写入 usermerge 类型日志。用户页（用户:源）不会被自动移动。"
 ---
 
 <!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->

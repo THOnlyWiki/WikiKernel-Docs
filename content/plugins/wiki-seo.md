@@ -2,7 +2,7 @@
 title: "WikiSEO（WikiKernel 插件）"
 sidebar_label: "WikiSEO"
 sidebar_position: 25
-description: "移植自 MediaWiki 的 [Extension:WikiSEO](https://www.mediawiki.org/wiki/Extension:WikiSEO) **2.7.0** （源码基线 REL1_43，原扩展路径 `extensions/WikiSEO`），用于给词条阅读页补充 SEO 元数据："
+description: "移植自 MediaWiki 的 Extension:WikiSEO 2.7.0 （源码基线 REL143，原扩展路径 extensions/WikiSEO），用于给词条阅读页补充 SEO 元数据："
 ---
 
 <!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->

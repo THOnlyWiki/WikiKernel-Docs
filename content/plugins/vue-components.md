@@ -2,7 +2,7 @@
 title: "Vue 组件（插件 `vue-components`）"
 sidebar_label: "Vue 组件"
 sidebar_position: 23
-description: "Vue 3 单文件组件 = **wiki 页面**（`*.vue`），同名解析标签直接嵌进正文。"
+description: "Vue 3 单文件组件 = wiki 页面（.vue），同名解析标签直接嵌进正文。"
 ---
 
 <!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->

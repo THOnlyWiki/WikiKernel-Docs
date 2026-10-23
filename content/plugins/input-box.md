@@ -2,7 +2,7 @@
 title: "InputBox（插件）"
 sidebar_label: "InputBox"
 sidebar_position: 16
-description: "InputBox 扩展的 WikiKernel 移植（对应 MediaWiki 的 [InputBox](https://www.mediawiki.org/wiki/Extension:InputBox)）， 从 core 内置功能拆出为独立插件（`plugin/input-box`）。"
+description: "InputBox 扩展的 WikiKernel 移植（对应 MediaWiki 的 InputBox）， 从 core 内置功能拆出为独立插件（plugin/input-box）。"
 ---
 
 <!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->

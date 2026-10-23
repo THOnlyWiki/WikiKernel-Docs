@@ -2,7 +2,7 @@
 title: "Echo（通知）插件"
 sidebar_label: "Echo"
 sidebar_position: 31
-description: "仿 MediaWiki **Echo** 扩展的通知中心：**顶栏铃铛（未读红点 / 下拉面板）+ 特殊:通知 + 通知偏好**， 通知触发覆盖「用户讨论页被编辑 / @提及 / 编辑被回退 / 新用户欢迎」，**kawaii-timeless 与 plain / vector / fallback 皮肤通用**。"
+description: "仿 MediaWiki Echo 扩展的通知中心：顶栏铃铛（未读红点 / 下拉面板）+ 特殊:通知 + 通知偏好， 通知触发覆盖「用户讨论页被编辑 / @提及 / 编辑被回退 / 新用户欢迎」，kawaii-timeless 与 plain / vector / fallback 皮肤通用。"
 ---
 
 <!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->

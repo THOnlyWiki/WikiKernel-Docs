@@ -2,7 +2,7 @@
 title: "plain-skin（额外的 plain 皮肤插件）"
 sidebar_label: "plain-skin"
 sidebar_position: 50
-description: "一个**皮肤插件**（不是功能扩展移植）：注册精简的 `plain` 皮肤 —— 居中卡片、无侧栏。"
+description: "一个皮肤插件（不是功能扩展移植）：注册精简的 plain 皮肤 —— 居中卡片、无侧栏。"
 ---
 
 <!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->

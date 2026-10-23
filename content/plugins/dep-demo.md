@@ -2,7 +2,7 @@
 title: "dep-demo（插件平台能力演示 / 测试用插件）"
 sidebar_label: "dep-demo"
 sidebar_position: 80
-description: "plugin.id=dep-demo plugin.requires= # 运行期依赖（本插件留空 = 不依赖其它插件） plugin.requiresCore=>=0.0.1 # core 版本约束（数字段比较，0.0.1-SNAPSHOT 也满足） plugin.clientRequires=comments # 前端资源依赖：comments 的 head 片段先注入 plugin.aop=true # 声明需要插件 AOP 桥（"
+description: "plugin.id=dep-demo plugin.requires= # 运行期依赖（本插件留空 = 不依赖其它插件） plugin.requiresCore=>=0.0.1 # core 版本约束（数字段比较，0.0.1-SNAPSHOT 也满足） plugin.clientRequires=comments # 前端资源依赖：comments 的 he…"
 ---
 
 <!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->

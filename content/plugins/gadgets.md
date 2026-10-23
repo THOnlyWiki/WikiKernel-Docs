@@ -2,7 +2,7 @@
 title: "gadgets（MediaWiki Gadgets 扩展移植）"
 sidebar_label: "gadgets"
 sidebar_position: 13
-description: "定义页 `WikiKernel:Gadgets-definition`，资源页在 `Gadget:` / `小部件:` 命名空间："
+description: "定义页 WikiKernel:Gadgets-definition，资源页在 Gadget: / 小部件: 命名空间："
 ---
 
 <!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->

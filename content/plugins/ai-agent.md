@@ -2,7 +2,7 @@
 title: "ai-agent —— AI 代理（AI Agent）"
 sidebar_label: "ai-agent —— AI 代理"
 sidebar_position: 70
-description: "`特殊:AI代理` / `Special:AiAgent`（别名 `Agent` / `AIAgent`）：让 AI **阅读词条 / 模板并起草编辑**， 代理只能 propose，**用户核对渲染预览与差异、点「确认提交」后才会保存**（以用户本人名义 + 隐藏水印）， **不进审核队列**。"
+description: "特殊:AI代理 / Special:AiAgent（别名 Agent / AIAgent）：让 AI 阅读词条 / 模板并起草编辑， 代理只能 propose，用户核对渲染预览与差异、点「确认提交」后才会保存（以用户本人名义 + 隐藏水印）， 不进审核队列。"
 ---
 
 <!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->

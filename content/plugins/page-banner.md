@@ -2,7 +2,7 @@
 title: "WikidataPageBanner（页面横幅，插件）"
 sidebar_label: "WikidataPageBanner"
 sidebar_position: 19
-description: "WikidataPageBanner 扩展的 WikiKernel 移植（对应 MediaWiki 的 [WikidataPageBanner](https://www.mediawiki.org/wiki/Extension:WikidataPageBanner)）， 从 core 内置功能拆出为独立插件（`plugin/page-banner`）：横幅的**渲染与设置都在本插件**， core 里不再有页面横幅代码（设置页的分区与安"
+description: "WikidataPageBanner 扩展的 WikiKernel 移植（对应 MediaWiki 的 WikidataPageBanner）， 从 core 内置功能拆出为独立插件（plugin/page-banner）：横幅的渲染与设置都在本插件， core 里不再有页面横幅代码（设置页的分区与安装向导步骤都由插件注册，core 只按声明的键渲染 / 保…"
 ---
 
 <!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->

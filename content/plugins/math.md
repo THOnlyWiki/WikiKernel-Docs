@@ -2,7 +2,7 @@
 title: "Math（插件）"
 sidebar_label: "Math"
 sidebar_position: 17
-description: "Math 扩展的 WikiKernel 移植（对应 MediaWiki 的 [Math](https://www.mediawiki.org/wiki/Extension:Math) 的客户端渲染模式）， 从 core 内置功能拆出为独立插件（`plugin/math`）。"
+description: "Math 扩展的 WikiKernel 移植（对应 MediaWiki 的 Math 的客户端渲染模式）， 从 core 内置功能拆出为独立插件（plugin/math）。"
 ---
 
 <!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->

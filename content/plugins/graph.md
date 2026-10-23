@@ -2,7 +2,7 @@
 title: "graph（MediaWiki Graph 扩展移植）"
 sidebar_label: "graph"
 sidebar_position: 14
-description: "`<graph>` 标签与 `图表:` / `Graph:` 命名空间的**整页图**：正文是 Vega / Vega-Lite 规范（JSON）， 由**本地内置**的 Vega 渲染（不走 CDN、不需要 Graphoid 服务，也不需要 headless 浏览器）。"
+description: "标签与 图表: / Graph: 命名空间的整页图：正文是 Vega / Vega-Lite 规范（JSON）， 由本地内置的 Vega 渲染（不走 CDN、不需要 Graphoid 服务，也不需要 headless 浏览器）。"
 ---
 
 <!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->

@@ -2,7 +2,7 @@
 title: "confirm-edit（MediaWiki ConfirmEdit 扩展移植）"
 sidebar_label: "confirm-edit"
 sidebar_position: 21
-description: "编辑 / 创建页面时的**算术验证码**：未豁免用户（含匿名）打开编辑页时，编辑框下方出现一道随机加法题 （题面与答案存会话，一次一题）；保存时由插件校验，答错回到编辑表单（**已填内容与摘要保留**）并换一道新题。"
+description: "编辑 / 创建页面时的算术验证码：未豁免用户（含匿名）打开编辑页时，编辑框下方出现一道随机加法题 （题面与答案存会话，一次一题）；保存时由插件校验，答错回到编辑表单（已填内容与摘要保留）并换一道新题。"
 ---
 
 <!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->

@@ -2,7 +2,7 @@
 title: "Flash Player（Ruffle，插件）"
 sidebar_label: "Flash Player"
 sidebar_position: 40
-description: "Flash 播放器（对应 core 内置的 `<flash-player>` + Ruffle 方案），从 core 拆出为独立插件（`plugin/flash-player`）。"
+description: "Flash 播放器（对应 core 内置的  + Ruffle 方案），从 core 拆出为独立插件（plugin/flash-player）。"
 ---
 
 <!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->

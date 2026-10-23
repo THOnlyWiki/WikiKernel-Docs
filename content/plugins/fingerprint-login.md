@@ -2,7 +2,7 @@
 title: "fingerprint-login（浏览器数字指纹登录）"
 sidebar_label: "fingerprint-login"
 sidebar_position: 34
-description: "用**浏览器指纹**免密码登录：用户可以在多个浏览器上登记指纹（每用户最多 10 个）， 登录页出现「用浏览器指纹登录」按钮，点一下就能登录；登记的指纹可以随时在 `特殊:参数设置 → 指纹登录` 或 `特殊:指纹登录` 里查看与删除。"
+description: "用浏览器指纹免密码登录：用户可以在多个浏览器上登记指纹（每用户最多 10 个）， 登录页出现「用浏览器指纹登录」按钮，点一下就能登录；登记的指纹可以随时在 特殊:参数设置 → 指纹登录 或 特殊:指纹登录 里查看与删除。"
 ---
 
 <!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->

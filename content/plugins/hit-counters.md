@@ -2,7 +2,7 @@
 title: "hit-counters（MediaWiki HitCounters 扩展移植）"
 sidebar_label: "hit-counters"
 sidebar_position: 15
-description: "页面浏览计数 —— 对应 MediaWiki 的 [HitCounters](https://www.mediawiki.org/wiki/Extension:HitCounters) 扩展（第三方扩展）。"
+description: "页面浏览计数 —— 对应 MediaWiki 的 HitCounters 扩展（第三方扩展）。"
 ---
 
 <!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->

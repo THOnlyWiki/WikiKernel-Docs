@@ -2,7 +2,7 @@
 title: "comments（MediaWiki Comments 扩展移植）"
 sidebar_label: "comments"
 sidebar_position: 30
-description: "默认**自动显示**在正文下方（Flow 风格嵌套回复）：发表、回复（支持 wikitext）、软删除； 作者本人或「评论管理员」/ 管理员 / 行政员可以删除。"
+description: "默认自动显示在正文下方（Flow 风格嵌套回复）：发表、回复（支持 wikitext）、软删除； 作者本人或「评论管理员」/ 管理员 / 行政员可以删除。"
 ---
 
 <!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->

@@ -2,7 +2,7 @@
 title: "CategoryTree（WikiKernel 插件）"
 sidebar_label: "CategoryTree"
 sidebar_position: 10
-description: "MediaWiki [`CategoryTree`](https://www.mediawiki.org/wiki/Extension:CategoryTree) 扩展的移植： 用树形结构浏览分类成员，节点可以点开（AJAX 懒加载），另有「特殊:分类树」与 `action=categorytree` API。"
+description: "MediaWiki CategoryTree 扩展的移植： 用树形结构浏览分类成员，节点可以点开（AJAX 懒加载），另有「特殊:分类树」与 action=categorytree API。"
 ---
 
 <!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->

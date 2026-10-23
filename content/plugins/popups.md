@@ -2,7 +2,7 @@
 title: "Popups（页面预览，插件）"
 sidebar_label: "Popups"
 sidebar_position: 20
-description: "Popups / Page Previews 的 WikiKernel 移植（对应 MediaWiki 的 [Popups](https://www.mediawiki.org/wiki/Extension:Popups)）， 从 core 内置功能拆出为独立插件（`plugin/popups`）。"
+description: "Popups / Page Previews 的 WikiKernel 移植（对应 MediaWiki 的 Popups）， 从 core 内置功能拆出为独立插件（plugin/popups）。"
 ---
 
 <!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->

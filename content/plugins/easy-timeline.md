@@ -2,7 +2,7 @@
 title: "EasyTimeline（插件）"
 sidebar_label: "EasyTimeline"
 sidebar_position: 12
-description: "EasyTimeline 扩展的 WikiKernel 移植（对应 MediaWiki 的 [EasyTimeline](https://www.mediawiki.org/wiki/Extension:EasyTimeline)）， 从 core 内置功能拆出为独立插件（`plugin/easy-timeline`）。"
+description: "EasyTimeline 扩展的 WikiKernel 移植（对应 MediaWiki 的 EasyTimeline）， 从 core 内置功能拆出为独立插件（plugin/easy-timeline）。"
 ---
 
 <!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->

@@ -2,7 +2,7 @@
 title: "OSS Storage 扩展"
 sidebar_label: "OSS Storage 扩展"
 sidebar_position: 43
-description: "把 Wiki 的原图（含历史版本）同步到独立 `oss-server`，缩略图由 OSS 服务端生成并缓存。扩展通过 core 新增的 `FileUrlResolver` 改写页面里的文件 URL；OSS 不可用时自动回退本地。"
+description: "把 Wiki 的原图（含历史版本）同步到独立 oss-server，缩略图由 OSS 服务端生成并缓存。扩展通过 core 新增的 FileUrlResolver 改写页面里的文件 URL；OSS 不可用时自动回退本地。"
 ---
 
 <!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->

@@ -2,7 +2,7 @@
 title: "widget（MediaWiki Widgets 扩展移植）"
 sidebar_label: "widget"
 sidebar_position: 24
-description: "微件 = `微件:` / `Widget:` 命名空间下的页面，内容是 **HTML + 迷你 Smarty**；在任意页面用 `{{#widget:名称|参数=值}}` 调用，输出**原样插入**（可信块，不经过 HTML 白名单）。"
+description: "微件 = 微件: / Widget: 命名空间下的页面，内容是 HTML + 迷你 Smarty；在任意页面用 {{#widget:名称|参数=值}} 调用，输出原样插入（可信块，不经过 HTML 白名单）。"
 ---
 
 <!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->

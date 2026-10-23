@@ -2,7 +2,7 @@
 title: "DynamicPageList4（WikiKernel 移植）"
 sidebar_label: "DynamicPageList4"
 sidebar_position: 11
-description: "对应 MediaWiki 的 **DynamicPageList4** 扩展，提供页面里按条件列出页面的解析器函数："
+description: "对应 MediaWiki 的 DynamicPageList4 扩展，提供页面里按条件列出页面的解析器函数："
 ---
 
 <!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->

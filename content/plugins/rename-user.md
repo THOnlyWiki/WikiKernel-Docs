@@ -2,7 +2,7 @@
 title: "rename-user（MediaWiki Renameuser 扩展移植）"
 sidebar_label: "rename-user"
 sidebar_position: 35
-description: "重命名用户账号（`wiki_user.username`），可**同时移动** `用户:旧名` / `用户讨论:旧名` 及其子页面 （不留重定向）；写入 `renameuser` 类型日志。**需要「重命名用户」权限组**（默认无人拥有，管理员可在 `特殊:用户权限` 授予；仿 Renameuser 扩展的 `renameuser` 权限）。"
+description: "重命名用户账号（wikiuser.username），可同时移动 用户:旧名 / 用户讨论:旧名 及其子页面 （不留重定向）；写入 renameuser 类型日志。需要「重命名用户」权限组（默认无人拥有，管理员可在 特殊:用户权限 授予；仿 Renameuser 扩展的 renameuser 权限）。"
 ---
 
 <!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->

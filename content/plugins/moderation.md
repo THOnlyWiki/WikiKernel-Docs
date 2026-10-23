@@ -2,7 +2,7 @@
 title: "moderation（MediaWiki Moderation 扩展移植）"
 sidebar_label: "moderation"
 sidebar_position: 22
-description: "审核：没有豁免权的用户提交的**页面编辑 / 创建、文件上传与文件删除**不会立即生效， 而是进入审核队列；由**核查员 / 管理员**在 `特殊:审核`（`Special:Moderation`）里通过或拒绝。"
+description: "审核：没有豁免权的用户提交的页面编辑 / 创建、文件上传与文件删除不会立即生效， 而是进入审核队列；由核查员 / 管理员在 特殊:审核（Special:Moderation）里通过或拒绝。"
 ---
 
 <!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->

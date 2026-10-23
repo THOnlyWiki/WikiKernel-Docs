@@ -2,7 +2,7 @@
 title: "template-data（TemplateData 移植）"
 sidebar_label: "template-data"
 sidebar_position: 21
-description: "MediaWiki 扩展 [TemplateData](https://www.mediawiki.org/wiki/Extension:TemplateData) 0.1.2 的 WikiKernel 移植： 模板参数的 JSON 数据（`<templatedata>` 标签）解析、校验、规范化、页面属性存储、文档表格渲染， 以及 `action=templatedata` API。"
+description: "MediaWiki 扩展 TemplateData 0.1.2 的 WikiKernel 移植： 模板参数的 JSON 数据（ 标签）解析、校验、规范化、页面属性存储、文档表格渲染， 以及 action=templatedata API。"
 ---
 
 <!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->

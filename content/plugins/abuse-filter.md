@@ -2,7 +2,7 @@
 title: "abuse-filter（MediaWiki AbuseFilter 扩展移植）"
 sidebar_label: "abuse-filter"
 sidebar_position: 20
-description: "滥用过滤器：用**条件表达式**匹配编辑 / 移动 / 注册 / 上传等动作的变量（页面标题、正文、用户、IP、 站点统计…），命中后执行「禁止（disallow）」「警告（warn）」「标记（tag）」「封禁（block）」 「移除自动确认（blockautopromote）」等动作；命中写**滥用日志**（含变量快照）， 管理员在 `特殊:滥用过滤器` 里维护过滤器（含历史恢复与测试），在 `特殊:滥用日志` 里查看命中记录。"
+description: "滥用过滤器：用条件表达式匹配编辑 / 移动 / 注册 / 上传等动作的变量（页面标题、正文、用户、IP、 站点统计…），命中后执行「禁止（disallow）」「警告（warn）」「标记（tag）」「封禁（block）」 「移除自动确认（blockautopromote）」等动作；命中写滥用日志（含变量快照）， 管理员在 特殊:滥用过滤器 里维护过滤器（含历史…"
 ---
 
 <!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->

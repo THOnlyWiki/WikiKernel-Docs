@@ -2,7 +2,7 @@
 title: "no-title（MediaWiki NoTitle 扩展移植）"
 sidebar_label: "no-title"
 sidebar_position: 18
-description: "在页面里写 `__NOTITLE__`（别名 `__无标题__`）即可隐藏页面大标题 —— 对应 MediaWiki 的 [NoTitle](https://www.mediawiki.org/wiki/Extension:NoTitle) 扩展。"
+description: "在页面里写 NOTITLE（别名 无标题）即可隐藏页面大标题 —— 对应 MediaWiki 的 NoTitle 扩展。"
 ---
 
 <!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->
