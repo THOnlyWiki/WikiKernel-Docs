@@ -68,6 +68,15 @@ scripts/sync-plugins.mjs 插件同步脚本
 
 ## 部署
 
+### 首次发布
+
+如果远端仓库尚未创建，请先在 GitHub 创建空的 `THOnlyWiki/WikiKernel-Docs`，然后：
+
+```bash
+git remote add origin https://github.com/THOnlyWiki/WikiKernel-Docs.git
+git push -u origin main
+```
+
 ### GitHub Pages
 
 `.github/workflows/deploy.yml` 已配置 GitHub Pages 构建与发布。推送到 `main` 后启用仓库的 Pages（Source 选 GitHub Actions）即可。
