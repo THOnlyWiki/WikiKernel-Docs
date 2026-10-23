@@ -7,7 +7,7 @@ const baseUrl = process.env.DOCUSAURUS_BASE_URL ?? '/';
 
 const config: Config = {
   title: 'WikiKernel',
-  tagline: '用 Java 构建可插拔的 MediaWiki 风格 Wiki',
+  tagline: '用 Java 重写的 MediaWiki 风格 Wiki 引擎',
   favicon: 'img/logo.svg',
 
   url: siteUrl,
@@ -84,7 +84,7 @@ const config: Config = {
         alt: 'WikiKernel',
         src: 'img/logo.svg',
       },
-      hideOnScroll: true,
+      hideOnScroll: false,
       items: [
         {
           type: 'docSidebar',

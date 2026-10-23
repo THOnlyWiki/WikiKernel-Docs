@@ -1,7 +1,6 @@
 import React from 'react';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import PluginCard, {type Plugin} from '@site/src/components/PluginCard';
 import pluginsData from '@site/src/data/plugins.json';
 import styles from './index.module.css';
@@ -45,12 +44,10 @@ const features = [
 ];
 
 export default function Home() {
-  const {siteConfig} = useDocusaurusContext();
-
   return (
     <Layout
       title="WikiKernel"
-      description="Java 21 + Spring Boot 4 编写的可插拔 MediaWiki 风格 Wiki 引擎。">
+      description="用 Java 21 和 Spring Boot 4 重写的 MediaWiki 风格 Wiki 引擎。">
       <main>
         <section className={styles.hero}>
           <div className={styles.heroInner}>
@@ -61,13 +58,13 @@ export default function Home() {
                 <span>GPLv3</span>
               </div>
               <h1>
-                把 MediaWiki 的
+                用 Java 重写
                 <br />
-                使用习惯，带进 Java 世界
+                MediaWiki
               </h1>
               <p className={styles.lead}>
-                {siteConfig.tagline}。页面、模板、特殊页、API 与插件平台，
-                一个可执行 jar 就能跑起来。
+                用 Java 21 和 Spring Boot 4 重写内容模型、特殊页与 Action API。
+                皮肤和功能做成插件，一个可执行 jar 就能跑起来。
               </p>
               <div className={styles.actions}>
                 <Link className="button button--primary button--lg" to="/docs/getting-started/quickstart">

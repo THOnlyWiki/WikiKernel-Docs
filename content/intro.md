@@ -7,7 +7,7 @@ description: WikiKernel 的快速开始、使用手册、部署指南、插件�
 
 # WikiKernel 文档
 
-WikiKernel 是一个用 **Java 21** 和 **Spring Boot 4** 编写的 wiki 引擎。它按 MediaWiki 的方式组织内容：页面与修订、命名空间、Wikitext 与模板、特殊页面，以及兼容 MediaWiki 的 `/api.php` 和 `mw` JS API。
+WikiKernel 是一个用 **Java 21** 和 **Spring Boot 4** 重写的 MediaWiki 风格 Wiki 引擎。它按 MediaWiki 的方式组织内容：页面与修订、命名空间、Wikitext 与模板、特殊页面，以及兼容 MediaWiki 的 `/api.php` 和 `mw` JS API。
 
 皮肤、扩展语法和治理功能都做成插件，core 在编译期不依赖任何插件。
 
