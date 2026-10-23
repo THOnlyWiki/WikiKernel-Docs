@@ -87,6 +87,19 @@ const docsLink = {
   'WIKITEXT.md': '/docs/guides/wikitext',
 };
 
+const docsContentLink = {
+  'api/reference.md': '/docs/api/reference',
+  'administration/configuration-reference.md': '/docs/administration/configuration-reference',
+  'administration/third-party-login.md': '/docs/administration/third-party-login',
+  'guides/features.md': '/docs/guides/features',
+  'guides/wikitext.md': '/docs/guides/wikitext',
+  'development/mixin.md': '/docs/development/mixin',
+  'development/plugin-development.md': '/docs/development/plugin-development',
+  'development/skins.md': '/docs/development/skins',
+  'deployment/docker.md': '/docs/deployment/docker',
+  'deployment/configuration.md': '/docs/deployment/configuration',
+};
+
 function oneLine(value) {
   return value.replace(/\s+/g, ' ').trim();
 }
@@ -126,6 +139,14 @@ function rewriteLinks(body, id) {
     );
     result = result.replace(
       new RegExp(`\\.\\./docs/${escaped}(#[^)\\s]*)?`, 'g'),
+      (_match, hash = '') => `${target}${hash}`,
+    );
+  }
+
+  for (const [file, target] of Object.entries(docsContentLink)) {
+    const escaped = file.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    result = result.replace(
+      new RegExp(`\\.\\./\\.\\./docs/content/${escaped}(#[^)\\s]*)?`, 'g'),
       (_match, hash = '') => `${target}${hash}`,
     );
   }
