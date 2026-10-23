@@ -8,15 +8,24 @@
   background: var(--ifm-background-surface-color);
   color: inherit;
   text-decoration: none;
-  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease;
+  animation: plugin-card-in 200ms ease-out both;
+  transition:
+    transform 220ms var(--wk-ease),
+    border-color 220ms var(--wk-ease),
+    box-shadow 220ms var(--wk-ease);
 }
 
 .card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   border-color: var(--ifm-color-primary);
-  box-shadow: 0 12px 30px rgb(15 23 42 / 10%);
+  box-shadow: 0 10px 24px rgb(15 23 42 / 8%);
   color: inherit;
   text-decoration: none;
+}
+
+.card:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgb(15 23 42 / 6%);
 }
 
 .topline {
@@ -107,4 +116,13 @@ html[data-theme='dark'] .stable {
 html[data-theme='dark'] .demo {
   color: #fdba74;
   background: #7c2d12;
+}
+
+@keyframes plugin-card-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

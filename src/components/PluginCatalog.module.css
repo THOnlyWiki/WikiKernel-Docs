@@ -34,6 +34,7 @@
   color: var(--ifm-font-color-base);
   font-size: 1rem;
   outline: none;
+  transition: border-color 160ms var(--wk-ease), box-shadow 160ms var(--wk-ease);
 }
 
 .search:focus {
@@ -56,7 +57,10 @@
   cursor: pointer;
   font: inherit;
   font-size: 0.82rem;
-  transition: background 140ms ease, border-color 140ms ease, color 140ms ease;
+  transition:
+    background-color 180ms var(--wk-ease),
+    border-color 180ms var(--wk-ease),
+    color 180ms var(--wk-ease);
 }
 
 .chip span {

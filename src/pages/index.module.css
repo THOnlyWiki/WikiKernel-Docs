@@ -302,6 +302,16 @@
   border: 1px solid var(--ifm-color-emphasis-200);
   border-radius: 16px;
   background: var(--ifm-background-surface-color);
+  transition:
+    transform 220ms var(--wk-ease),
+    border-color 220ms var(--wk-ease),
+    box-shadow 220ms var(--wk-ease);
+}
+
+.feature:hover {
+  transform: translateY(-1px);
+  border-color: var(--ifm-color-emphasis-300);
+  box-shadow: 0 8px 20px rgb(15 23 42 / 6%);
 }
 
 .featureIcon {

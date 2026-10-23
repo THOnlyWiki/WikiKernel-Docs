@@ -15,6 +15,8 @@
   --ifm-background-color: #ffffff;
   --ifm-background-surface-color: #ffffff;
   --docusaurus-highlighted-code-line-bg: rgb(219 39 119 / 10%);
+  --wk-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --wk-duration: 220ms;
 }
 
 [data-theme='dark'] {
@@ -41,6 +43,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
 }
 
 body {
@@ -49,7 +52,8 @@ body {
 }
 
 .navbar {
-  backdrop-filter: blur(12px);
+  background: var(--ifm-background-color);
+  backdrop-filter: none;
 }
 
 .navbar__title {
@@ -65,6 +69,7 @@ body {
 .navbar__link {
   font-size: 0.9rem;
   font-weight: 600;
+  transition: color 150ms ease, background-color 150ms ease;
 }
 
 .navbar__items--right .navbar__link[href*='releases'] {
@@ -78,6 +83,19 @@ body {
 .pluginsPage .button {
   border-radius: 9px;
   font-weight: 700;
+}
+
+.button {
+  transition:
+    background-color 180ms var(--wk-ease),
+    border-color 180ms var(--wk-ease),
+    color 180ms var(--wk-ease),
+    box-shadow 180ms var(--wk-ease),
+    transform 120ms var(--wk-ease);
+}
+
+.button:active {
+  transform: translateY(1px);
 }
 
 .button--primary {
@@ -109,10 +127,12 @@ body {
   margin-top: 2.6rem;
   padding-top: 0.25rem;
   border-top: 1px solid var(--ifm-color-emphasis-200);
+  scroll-margin-top: 5rem;
 }
 
 .markdown h3 {
   margin-top: 1.8rem;
+  scroll-margin-top: 5rem;
 }
 
 .markdown table {
@@ -141,6 +161,7 @@ body {
 .menu__link {
   border-radius: 6px;
   font-size: 0.9rem;
+  transition: color 140ms ease, background-color 140ms ease;
 }
 
 .menu__list-item-collapsible > .menu__link {
@@ -167,10 +188,12 @@ body {
 
 .footer__link-item {
   font-size: 0.85rem;
+  transition: color 140ms ease;
 }
 
 .pagination-nav__link {
   border-radius: 10px;
+  transition: border-color 160ms ease, background-color 160ms ease;
 }
 
 .DocSearch-Button {
@@ -188,5 +211,20 @@ body {
 
   .markdown table {
     font-size: 0.85rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
   }
 }
