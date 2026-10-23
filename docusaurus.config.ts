@@ -38,6 +38,7 @@ const config: Config = {
         hashed: true,
         language: ['zh', 'en'],
         docsRouteBasePath: 'docs',
+        docsDir: 'content',
         indexBlog: false,
         highlightSearchTermsOnTargetPage: true,
         searchBarPosition: 'right',
