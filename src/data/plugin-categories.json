@@ -1,0 +1,42 @@
+[
+  {
+    "id": "content",
+    "label": "内容与标记",
+    "count": 16
+  },
+  {
+    "id": "editing",
+    "label": "编辑与治理",
+    "count": 4
+  },
+  {
+    "id": "social",
+    "label": "用户与社交",
+    "count": 8
+  },
+  {
+    "id": "files",
+    "label": "文件与媒体",
+    "count": 4
+  },
+  {
+    "id": "skins",
+    "label": "皮肤",
+    "count": 1
+  },
+  {
+    "id": "site",
+    "label": "站点工具",
+    "count": 1
+  },
+  {
+    "id": "ai",
+    "label": "AI",
+    "count": 1
+  },
+  {
+    "id": "dev",
+    "label": "开发与演示",
+    "count": 1
+  }
+]

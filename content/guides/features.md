@@ -1,12 +1,17 @@
+---
+title: 功能详述
+sidebar_label: 完整功能清单
+---
+
 # 功能详述
 
-除接口（[接口与兼容 API](./API.md)）、配置（[配置与数据](./CONFIG.md)）、标记（[Wikitext 与内容标记](./WIKITEXT.md)）
-与前端界面（[皮肤与前端界面](./SKIN.md)）之外的全部功能：特殊页面、用户与登录、用户组与权限、参数设置、
+除接口（[接口与兼容 API](/docs/api/reference)）、配置（[配置与数据](/docs/administration/configuration-reference)）、标记（[Wikitext 与内容标记](/docs/guides/wikitext)）
+与前端界面（[皮肤与前端界面](/docs/development/skins)）之外的全部功能：特殊页面、用户与登录、用户组与权限、参数设置、
 AI 代理、文件上传与多媒体、邮件与邮箱确认、用户核查与合并、封禁、评论 / 私信 / 头像、操作日志、页面保护与移动、
 禁用标题名单、滥用过滤器、页面标题与 URL、条目分类、错误页、扩展功能（语法高亮 / Poem / InputBox / 页面横幅 /
 验证码 / 大量删除 / 重命名用户 / 替换文本）与浏览器指纹登录。
 
-其它文档：[README](../README.md) ｜ [接口与兼容 API](./API.md) ｜ [配置与数据](./CONFIG.md) ｜ [皮肤与前端界面](./SKIN.md) ｜ [Wikitext 与内容标记](./WIKITEXT.md) ｜ [插件开发与运行](./PLUGIN-DEV.md)
+其它文档：[README](https://github.com/THOnlyWiki/WikiKernel) ｜ [接口与兼容 API](/docs/api/reference) ｜ [配置与数据](/docs/administration/configuration-reference) ｜ [皮肤与前端界面](/docs/development/skins) ｜ [Wikitext 与内容标记](/docs/guides/wikitext) ｜ [插件开发与运行](/docs/development/plugin-development)
 
 ## 特殊页面（Special: / 特殊:）
 
@@ -107,7 +112,7 @@ MediaWiki 风格的注册/登录页 + JSON API（无需额外前端依赖）：
 > **设置也归插件自己**：插件注册一个「站点设置分区」（`common.extension.SiteSettingsSection`，core 只按
 > 声明的键渲染 / 保存）与一个安装向导步骤（`SetupStep`）；新配置写在 `registration.quiz`，
 > 旧的 `registration.questions` / `registration.answers` / `registration.question` 继续兼容。
-> 详见 [`plugin/registration-quiz/README.md`](../plugin/registration-quiz/README.md)。
+> 详见 [`plugin/registration-quiz/README.md`](/docs/plugins/registration-quiz)。
 
 推荐格式是**一行一道题**，题目和该题的所有可接受答案放在同一行，用 `|` 分隔：
 
@@ -418,7 +423,7 @@ wikikernel:
 > **未加载插件时**：`特殊:AI代理`、`/api/ai-agent/*`、`/api/ai-keys/*` 都不存在，参数设置里没有 AI 标签页，
 > 站点设置里没有 AI 厂商密钥表单，页面不注入 `/plugins/ai-agent/…`；开关 `features.ai-agent` 仍在（打开也没有功能）。
 > core 只保留开关、`wikikernel.ai.*` 配置项、`wiki_user_ai_key` 表与 AI 版本的隐藏水印渲染；
-> 完整差异、桥与接口清单见 [`plugin/ai-agent/README.md`](../plugin/ai-agent/README.md)。
+> 完整差异、桥与接口清单见 [`plugin/ai-agent/README.md`](/docs/plugins/ai-agent)。
 
 让 AI **阅读词条 / 模板并起草编辑**：代理只能 propose，**你核对渲染预览与差异、点「确认提交」后才会保存**——
 AI 的内容**由你自己负责核对**（可以直接改正文），所以**不走审核队列**；AI 协助的版本在词条最底部带一枚
@@ -624,7 +629,7 @@ AI 协助的版本会打标记（`wiki_revision.ai_assisted` / `ai_model`，提�
   - **实现位置**：前端编排（多选列表、逐个上传、插入画廊、对话框批量插入）与文案都在插件
     `multi-upload`（`/plugins/multi-upload/multi-upload.js`），core 的上传页只保留单文件表单、
     `POST /api/files/upload` 仍在 core（权限 / 审核 / 大小与类型限制不变）；
-    详见 [`plugin/multi-upload/README.md`](../plugin/multi-upload/README.md)；
+    详见 [`plugin/multi-upload/README.md`](/docs/plugins/multi-upload)；
 - **删除 / 恢复**（仿 MediaWiki 的删除 + 还原）：
   - 默认**软删除**：文件不进列表、`/files/**` 返回 404，但历史版本与磁盘内容保留，
     在 `特殊:已删除文件` 的回收站里可以**恢复**；
@@ -728,7 +733,7 @@ wikikernel:
 > `plugin/user-merge`**（`特殊:用户核查` / `Special:CheckUser` 仍由 core 提供）。
 > 插件未加载时 `特殊:用户合并` 与 `/api/user-merge` 不存在（404）、core 不写 `usermerge` 日志；
 > 数据与规则逻辑仍在 core 的 `UserMergeServiceImpl`（经 `common.service.UserMergeStore` 桥）。差异见
-> [`plugin/user-merge/README.md`](../plugin/user-merge/README.md)。
+> [`plugin/user-merge/README.md`](/docs/plugins/user-merge)。
 
 「核查员」是内置的手动用户组（管理员 / 行政员可在 `特殊:用户权限` 授予；用户页「工具」侧栏会出现对应入口）：
 
@@ -799,7 +804,7 @@ wikikernel:
 > 本节描述的行为由插件 `plugin/social-profile` 提供（`UserProfileHook` + 插件特殊页 + 插件 API）；
 > core 只保留站点设置开关与资料卡槽位——**插件未加载时**资料卡用默认头像、没有「上传头像 / 私信」链接，
 > `特殊:上传头像` 与 `GET /avatars/<文件名>` 都不存在（404）。插件的移植范围与差异见
-> [`plugin/social-profile/README.md`](../plugin/social-profile/README.md)。
+> [`plugin/social-profile/README.md`](/docs/plugins/social-profile)。
 
 - **开关**：整个「用户交互」（头像上传 + 私信）可在 `特殊:权限配置 → 站点设置` 启停
   （或 `LocalSettings.yaml` 的 `wikikernel.features.social-profile`，`/init` 核心 tab 也能设置）；
@@ -965,7 +970,7 @@ wikikernel:
 
 ## 滥用过滤器（插件 `abuse-filter`，仿 MediaWiki AbuseFilter）
 
-> 评估逻辑、管理界面与命中日志已迁到插件 **`abuse-filter`**（详见 [`plugin/abuse-filter/README.md`](../plugin/abuse-filter/README.md)）：
+> 评估逻辑、管理界面与命中日志已迁到插件 **`abuse-filter`**（详见 [`plugin/abuse-filter/README.md`](/docs/plugins/abuse-filter)）：
 > 拦截入口走平台钩子——编辑 / 创建 → `EditGuard`（网页与 `api.php` 都评估）、移动 / 上传 / 删除 / 封禁 → `ActionGuard`、注册 → `RegistrationGuard`；
 > 数据仍是 `wiki_abuse_filter` / `wiki_abuse_filter_revision` / `wiki_abuse_log` 三张表，但**表与实体现在都属于插件**：
 > 插件在 `WikiPlugin.schemaEntities()` 里声明自己的 `@TableName` 实体（core 在 `onStart` 前按同一套 Auto-DDL 建表 / 补列），
@@ -1055,7 +1060,7 @@ wikikernel:
   默认内容与内置提示一致，其中「搜索本页标题 / 搜索相关日志 / 创建本页面」都是**可点击蓝链**
   （分别指向 `特殊:搜索?q=标题`、`特殊:日志?page=标题`、`标题?action=edit`）；页面内容支持占位符：
   `$TITLE$`（被访问的标题）、`$SEARCH_URL$` / `$LOGS_URL$` / `$CREATE_URL$`（上面三个链接的地址），渲染前替换：
-  > 此页面目前没有内容。您可以在其他页面中<a href="$SEARCH_URL$">搜索本页标题</a>、<a href="$LOGS_URL$">搜索相关日志</a>或<a href="$CREATE_URL$">创建本页面</a>
+  > 此页面目前没有内容。您可以在其他页面中<a href="https://example.invalid/search">搜索本页标题</a>、<a href="https://example.invalid/logs">搜索相关日志</a>或<a href="https://example.invalid/create">创建本页面</a>
   >
   > 注意：如果您要从其他网站大段引用文字到本站，请在页面内注明内容出处！建议您使用 `<ref>出处网址</ref>` 来标记所引用的内容的出处。
 - 想改 404 文案 / 样式：直接编辑 `WikiKernel:404`（支持 wikitext、模板、白名单 HTML，含 `<a href>`）；内容会跟着皮肤走；
@@ -1139,7 +1144,7 @@ wikikernel:
 
 > 渲染已迁到插件 **`plugin/page-banner`**（`{{PAGEBANNER:…}}` 解析器函数 + `<exclude-banner-page />` 标签 +
 > 横幅 HTML + 样式）：本节的开关、图片池与动态配置**仍在 core 的站点设置里**（插件经 `SiteConfig` 读同一批键），
-> 详见 [`plugin/page-banner/README.md`](../plugin/page-banner/README.md)。
+> 详见 [`plugin/page-banner/README.md`](/docs/plugins/page-banner)。
 
 - 开关 `features.page-banner`（默认开启）；横幅图片池 `features.page-banner.files`（`|` 分隔的文件页名称）；
 - **动态轮播**（默认 5 秒自动翻页，也可手动翻页）：横幅渲染该页可用的**全部**图片并轮播——鼠标悬停 / 键盘焦点进入时暂停，
@@ -1172,7 +1177,7 @@ wikikernel:
 > `EditFormField` 在编辑框下方渲染题目与输入框、用 `EditGuard` 在网页保存前校验（`api.php` 的来源是
 > `api`，直接放行），`confirmEdit.*` 文案也随插件走（键名不变）。
 > **开关与免验证组仍留在 core 的站点设置里**（插件经 `SiteConfig` 读同一批键），
-> 详见 [`plugin/confirm-edit/README.md`](../plugin/confirm-edit/README.md)。
+> 详见 [`plugin/confirm-edit/README.md`](/docs/plugins/confirm-edit)。
 
 - 开关 `features.confirm-edit`（**默认关闭**）；免验证用户组 `features.confirm-edit.bypass-groups`
   （`|` 分隔的权限组名，默认 `管理员` / `行政员` / `自动确定用户` / `机器人`）；
@@ -1204,7 +1209,7 @@ wikikernel:
 > `log.renameuser.*` 文案全部在插件里；core 只保留「重命名用户」用户组（`GROUP_RENAME_USER`）与
 > `common.service.UserAdminStore` 桥（数据与规则逻辑：改名 / 用户名规则 / 移动用户页 / 写日志仍在 core）。
 > 插件未加载时 `特殊:重命名用户` 与 `/api/user/rename` 不存在（404）、core 不写 `renameuser` 日志。
-> 差异见 [`plugin/rename-user/README.md`](../plugin/rename-user/README.md)。
+> 差异见 [`plugin/rename-user/README.md`](/docs/plugins/rename-user)。
 
 - `特殊:重命名用户` / `Special:RenameUser`：需要「**重命名用户**」权限组（默认无人拥有，
   管理员可在「特殊:用户权限」授予；仿 Renameuser 扩展的 `renameuser` 权限）；

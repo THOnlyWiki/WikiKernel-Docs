@@ -1,0 +1,11 @@
+services:
+  wikikernel:
+    image: eclipse-temurin:21-jre
+    container_name: wikikernel
+    working_dir: /opt/wikikernel
+    command: ["java", "-jar", "wikikernel-server.jar"]
+    ports:
+      - "18080:18080"
+    volumes:
+      - ./wikikernel:/opt/wikikernel
+    restart: unless-stopped

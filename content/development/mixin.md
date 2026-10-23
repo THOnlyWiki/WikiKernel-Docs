@@ -1,3 +1,8 @@
+---
+title: Mixin 与 MixinExtras
+sidebar_label: Mixin
+---
+
 # 插件 Mixin + MixinExtras（SpongePowered Mixin）
 
 WikiKernel 用 **启动期 Java Agent + Spring Boot `PropertiesLauncher`** 接入

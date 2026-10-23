@@ -1,9 +1,14 @@
+---
+title: API 参考
+sidebar_label: 完整 API 参考
+---
+
 # 接口与兼容 API
 
 WikiKernel 对外的读写接口：MediaWiki 风格的 `api.php`、`mw` / `mw.loader` 前端兼容层、跨 Wiki（Interwiki）链接表、
 页面导出 / 导入，以及链接悬停预览（Popups / Page Previews）。示例中的地址默认站点跑在 `http://localhost:18080`。
 
-其它文档：[README](../README.md) ｜ [配置与数据](./CONFIG.md) ｜ [功能详述](./FEATURES.md) ｜ [皮肤与前端界面](./SKIN.md) ｜ [Wikitext 与内容标记](./WIKITEXT.md) ｜ [插件开发与运行](./PLUGIN-DEV.md)
+其它文档：[README](https://github.com/THOnlyWiki/WikiKernel) ｜ [配置与数据](/docs/administration/configuration-reference) ｜ [功能详述](/docs/guides/features) ｜ [皮肤与前端界面](/docs/development/skins) ｜ [Wikitext 与内容标记](/docs/guides/wikitext) ｜ [插件开发与运行](/docs/development/plugin-development)
 
 ## 跨 Wiki（Interwiki）
 

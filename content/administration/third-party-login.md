@@ -1,3 +1,8 @@
+---
+title: 第三方登录
+sidebar_label: 第三方登录
+---
+
 # 第三方登录（GitHub / QQ）
 
 core 提供第三方 OAuth 登录 / 注册框架；GitHub / QQ provider 分别是 `external-auth-github`、`external-auth-qq` 插件。用户在登录 / 注册页点击 GitHub 或 QQ 按钮，完成后：

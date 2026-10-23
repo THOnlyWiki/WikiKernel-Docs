@@ -1,10 +1,15 @@
+---
+title: 配置与部署参考
+sidebar_label: 完整配置参考
+---
+
 # 配置与数据
 
 从 `application.yaml` / `LocalSettings.yaml` 到 Auto-DDL、MyBatis-Plus 数据访问、Redis 页面正文缓存、
 站点名称、访问控制与界面本地化（i18n）——「装好之后要调的东西」都在这里。
-怎么构建与启动见 [README](../README.md) 的「快速开始」，插件自己的配置键见 [插件开发与运行](./PLUGIN-DEV.md)。
+怎么构建与启动见 [README](https://github.com/THOnlyWiki/WikiKernel) 的「快速开始」，插件自己的配置键见 [插件开发与运行](/docs/development/plugin-development)。
 
-其它文档：[README](../README.md) ｜ [接口与兼容 API](./API.md) ｜ [功能详述](./FEATURES.md) ｜ [皮肤与前端界面](./SKIN.md) ｜ [Wikitext 与内容标记](./WIKITEXT.md) ｜ [插件开发与运行](./PLUGIN-DEV.md)
+其它文档：[README](https://github.com/THOnlyWiki/WikiKernel) ｜ [接口与兼容 API](/docs/api/reference) ｜ [功能详述](/docs/guides/features) ｜ [皮肤与前端界面](/docs/development/skins) ｜ [Wikitext 与内容标记](/docs/guides/wikitext) ｜ [插件开发与运行](/docs/development/plugin-development)
 
 ## 配置
 

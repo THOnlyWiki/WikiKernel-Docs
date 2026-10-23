@@ -1,10 +1,15 @@
+---
+title: Wikitext 与内容标记
+sidebar_label: Wikitext
+---
+
 # Wikitext 与内容标记
 
 页面正文的语法与渲染：Wikitext 与模板系统、微件（Widgets）、Gadgets、Lua 模块、数学公式（Math）、
 时间轴（EasyTimeline）、图形（Graph），以及分类、模板反查与 `#REDIRECT` 重定向。
-解析器函数 / 标签的**插件侧扩展点**见 [插件开发与运行](./PLUGIN-DEV.md)。
+解析器函数 / 标签的**插件侧扩展点**见 [插件开发与运行](/docs/development/plugin-development)。
 
-其它文档：[README](../README.md) ｜ [接口与兼容 API](./API.md) ｜ [配置与数据](./CONFIG.md) ｜ [功能详述](./FEATURES.md) ｜ [皮肤与前端界面](./SKIN.md) ｜ [插件开发与运行](./PLUGIN-DEV.md)
+其它文档：[README](https://github.com/THOnlyWiki/WikiKernel) ｜ [接口与兼容 API](/docs/api/reference) ｜ [配置与数据](/docs/administration/configuration-reference) ｜ [功能详述](/docs/guides/features) ｜ [皮肤与前端界面](/docs/development/skins) ｜ [插件开发与运行](/docs/development/plugin-development)
 
 ## Wikitext 渲染与模板系统
 
@@ -303,7 +308,7 @@ return p
 
 用 `<graph>…</graph>` 在词条里嵌 Vega / Vega-Lite 图形（仿 MediaWiki 的 Graph 扩展），
 以及**整页图**：把页面建在 `图表:`（`Graph:`）命名空间，正文直接写 Vega 规范，整页渲染成一张图。
-**标签解析与整页图已迁到插件 `graph`**（详见 [`plugin/graph/README.md`](../plugin/graph/README.md)）。
+**标签解析与整页图已迁到插件 `graph`**（详见 [`plugin/graph/README.md`](/docs/plugins/graph)）。
 
 - **绘图库本地内置**（`/vendor/vega/`，不走 CDN）：`vega` 5.33.1 + `vega-lite` 5.23.0 + `vega-embed` 6.29.0
   （共约 800KB；仍由 core 提供，插件按功能开关整页统一加载），规范放在 `application/json` 脚本里，

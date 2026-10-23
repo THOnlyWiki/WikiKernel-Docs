@@ -1,12 +1,17 @@
+---
+title: 插件开发
+sidebar_label: 插件开发
+---
+
 # 插件开发与运行
 
 模块依赖方向、构建与运行（`installPlugins` / `run.bat` / `/init` / 动态装卸 / 日志）、插件里使用 Spring、
 新增一个插件的目录与包结构约定、插件加载原理（core 侧）、插件依赖声明与 `CoreAopHook`，
 以及内置插件的完整清单（能力、扩展点、平台能力、配置键与与 MediaWiki 原版的差异）。
-插件的用途分类见 [README](../README.md#扩展插件)；每个插件自己的细节见仓库里的
+插件的用途分类见 [README](https://github.com/THOnlyWiki/WikiKernel#扩展插件)；每个插件自己的细节见仓库里的
 `plugin/<id>/README.md`（清单表格里给出了直达链接）。
 
-其它文档：[README](../README.md) ｜ [接口与兼容 API](./API.md) ｜ [配置与数据](./CONFIG.md) ｜ [功能详述](./FEATURES.md) ｜ [皮肤与前端界面](./SKIN.md) ｜ [Wikitext 与内容标记](./WIKITEXT.md) ｜ [插件 Mixin](./MIXIN.md)
+其它文档：[README](https://github.com/THOnlyWiki/WikiKernel) ｜ [接口与兼容 API](/docs/api/reference) ｜ [配置与数据](/docs/administration/configuration-reference) ｜ [功能详述](/docs/guides/features) ｜ [皮肤与前端界面](/docs/development/skins) ｜ [Wikitext 与内容标记](/docs/guides/wikitext) ｜ [插件 Mixin](/docs/development/mixin)
 
 ## 依赖方向（不会产生循环依赖的关键）
 
@@ -171,7 +176,7 @@ cc.thonly.wikikernel.plugin.<id>.model      record / DTO / 枚举 / 常量表 / 
 | `plugin.requiresCore` | **core 版本约束**：`>=`、`>`、`<=`、`<`、`=` 或裸版本号（裸版本号 = 至少该版本；空 = 不限制）。比较**只看数字段**，因此 `>=0.0.1` 在 `0.0.1-SNAPSHOT` 上成立 | 不满足 → 跳过启动 + WARN（日志里给出要求值与当前 `WikiKernelInfo.VERSION`） |
 | `plugin.clientRequires` | **客户端（前端资源）依赖**的其它插件 id（逗号分隔，可空）：本插件的 `<head>` 片段需要那些插件的前端资源先加载 | 对方没加载 → **插件照常启动**，页面 `<head>` 里留一条 HTML 注释警告 + WARN 日志（前端能力降级，后端不受影响） |
 | `plugin.aop`（可选） | 本插件要用 `CoreAopHook` 对 core 的 Bean 加切面（`true` / 空）。**声明后 core 才会在默认配置下启用插件 AOP 桥**（`wikikernel.plugins.aop-bridge=auto`）；不声明则一个代理都不建（默认安全） | 未声明 → 桥不启用，`CoreAopHook` 注册了也不会生效（WARN 提示按需开启） |
-| `plugin.mixins`（可选） | 本插件的 Mixin / MixinExtras 配置资源（逗号分隔，如 `mixins.my-plugin.json`）。启动期 Java Agent 会在 core 类加载前注册；不写时自动发现 `*.mixins.json` / `mixins*.json`。详见 [插件 Mixin](./MIXIN.md) | 未加载 Agent → 插件照常启动但 Mixin 不生效（WARN）；运行期新增 → 跳过启动，重启后生效 |
+| `plugin.mixins`（可选） | 本插件的 Mixin / MixinExtras 配置资源（逗号分隔，如 `mixins.my-plugin.json`）。启动期 Java Agent 会在 core 类加载前注册；不写时自动发现 `*.mixins.json` / `mixins*.json`。详见 [插件 Mixin](/docs/development/mixin) | 未加载 Agent → 插件照常启动但 Mixin 不生效（WARN）；运行期新增 → 跳过启动，重启后生效 |
 
 ```properties
 plugin.id=your-plugin
@@ -262,7 +267,7 @@ core 侧接线：
   `@Aspect` / `execution(...)` 不可用；`@Controller` 的 handler 实例由 MVC 在启动时缓存，
   切面作用于控制器 Bean 的**方法调用**（其它 Bean 注入的引用没问题），如需拦截请求链路建议切服务层。
 
-最小示例见插件 [`plugin/dep-demo`](../plugin/dep-demo/README.md)（`installPlugins` 不会把它复制进 `plugins/`）。
+最小示例见插件 [`plugin/dep-demo`](/docs/plugins/dep-demo)（`installPlugins` 不会把它复制进 `plugins/`）。
 
 ## 内置插件（MediaWiki 扩展移植）
 

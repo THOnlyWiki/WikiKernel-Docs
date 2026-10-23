@@ -1,9 +1,14 @@
+---
+title: 皮肤与前端界面
+sidebar_label: 皮肤
+---
+
 # 皮肤与前端界面
 
 皮肤机制与内置皮肤、页面自定义 CSS / JS 与代码页面（含 TypeScript 代码页面的服务端编译）、
 用户脚本引用（`mw.wikiImport`）、与 MediaWiki / OOUI 的样式对齐、插件皮肤，以及界面侧边栏 `WikiKernel:Sidebar`。
 
-其它文档：[README](../README.md) ｜ [接口与兼容 API](./API.md) ｜ [配置与数据](./CONFIG.md) ｜ [功能详述](./FEATURES.md) ｜ [Wikitext 与内容标记](./WIKITEXT.md) ｜ [插件开发与运行](./PLUGIN-DEV.md)
+其它文档：[README](https://github.com/THOnlyWiki/WikiKernel) ｜ [接口与兼容 API](/docs/api/reference) ｜ [配置与数据](/docs/administration/configuration-reference) ｜ [功能详述](/docs/guides/features) ｜ [Wikitext 与内容标记](/docs/guides/wikitext) ｜ [插件开发与运行](/docs/development/plugin-development)
 
 ## 侧边栏（WikiKernel:Sidebar）
 
