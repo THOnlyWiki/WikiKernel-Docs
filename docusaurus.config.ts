@@ -14,6 +14,10 @@ const config: Config = {
   baseUrl,
   trailingSlash: false,
 
+  future: {
+    experimental_router: 'hash',
+  },
+
   organizationName: 'THOnlyWiki',
   projectName: 'WikiKernel-Docs',
 
@@ -30,21 +34,6 @@ const config: Config = {
       onBrokenMarkdownLinks: 'warn',
     },
   },
-
-  themes: [
-    [
-      '@easyops-cn/docusaurus-search-local',
-      {
-        hashed: true,
-        language: ['zh', 'en'],
-        docsRouteBasePath: 'docs',
-        docsDir: 'content',
-        indexBlog: false,
-        highlightSearchTermsOnTargetPage: true,
-        searchBarPosition: 'right',
-      },
-    ],
-  ],
 
   presets: [
     [

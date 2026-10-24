@@ -81,6 +81,14 @@ git push -u origin main
 
 `.github/workflows/deploy.yml` 已配置 GitHub Pages 构建与发布。推送到 `main` 后启用仓库的 Pages（Source 选 GitHub Actions）即可。
 
+站点使用 Hash Router，页面地址形如：
+
+```text
+https://thonlywiki.github.io/WikiKernel-Docs/#/docs/getting-started/quickstart
+```
+
+因此即使部署在 `/WikiKernel-Docs/` 子路径，路由也不需要服务器做 SPA fallback。
+
 ### Cloudflare Pages / 其他静态托管
 
 构建命令：
@@ -92,13 +100,13 @@ npm run build
 
 输出目录：`build`
 
-如果站点部署在子路径（例如 `/docs/`），构建时设置：
+Hash Router 下 `baseUrl` 保持 `/`，即使站点部署在子路径（例如 `/docs/`）也不要改；页面路由在 hash 中：
 
 ```bash
-DOCUSAURUS_BASE_URL=/docs/ npm run build
+DOCUSAURUS_URL=https://example.com npm run build
 ```
 
-同时把 `DOCUSAURUS_URL` 设为完整站点地址。
+产物只有 `build/index.html` 和静态资源，上传整个 `build/` 即可。
 
 ## 内容约定
 

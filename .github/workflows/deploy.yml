@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DOCUSAURUS_URL: https://${{ github.repository_owner }}.github.io
-      DOCUSAURUS_BASE_URL: /${{ github.event.repository.name }}/
+      DOCUSAURUS_BASE_URL: /
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
