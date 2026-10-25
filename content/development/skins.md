@@ -153,7 +153,7 @@ Timeless（糖果风）把 `--wiki-button-primary-*` 映射到站点的 `--color
     渲染后分别替换左区（内置三链接）/ 右区（内置语言链接）；页面不存在或为空时回退内置内容；
   - **代码页面**：`.js` / `.css` / `.ts` / `.tsx` 只读高亮预览 + 带补全的编辑器（CodeMirror 本地内置，不依赖 CDN）；
     **默认只有「界面管理员」能编辑 / 创建 / 移动 CSS / JS 页面**（仿 MediaWiki 的 interface-admin，
-    可在 `特殊:权限配置` 用访问规则覆盖，例如给单个页面加精确规则）；
+    可在 `特殊:权限配置` 用访问规则覆盖，但全局 `*` / 前缀规则不会绕过，只有针对单个页面的**精确规则**才能放行）；
     阅读模式的预览是**可拖选 / Ctrl+A/C 复制的只读代码块**（光标由 CSS 隐藏，右上角另有「复制」按钮兜底）；
     页面顶部显示「清除浏览器缓存」提示（仿 MediaWiki:Clearyourcache，含 Firefox/Safari/Chrome/Edge 快捷键）；
     `.ts` / `.tsx` 还可以在服务端编译成 JavaScript 当脚本执行，见下文「[TypeScript 与 TypeScript 代码页面](#typescript-与-typescript-代码页面)」；
