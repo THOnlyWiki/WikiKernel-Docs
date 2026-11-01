@@ -423,7 +423,8 @@ wikikernel:
 - **生效范围**：浏览器标题栏（「页面名 - 站点名」）、页眉图标提示（Vector 的 logo `alt`；fallback 皮肤的品牌文字）、
   搜索框占位符（「搜索 我的维基」）、页脚标识行（「我的维基 · Powered by Spring Boot」）、
   动作 API `action=query&meta=siteinfo` 的 `sitename`、`mw.config.get('wgSiteName')`、
-  Lua 的 `mw.site.siteName`、导出文件里的 `sitename`、邮件主题 / 正文（如「我的维基 密码重置」）与滥用过滤器变量 `wiki_name`；
+  Lua 的 `mw.site.siteName`、导出文件里的 `sitename`、邮件主题 / 正文（如「我的维基 密码重置」）、
+  邮件发件人显示名（`wikikernel.email.from-name` 留空时）与滥用过滤器变量 `wiki_name`；
 - **规范化**：去掉控制字符、压缩连续空白、去首尾空白、最多 **128** 字符；留空 = 默认 `WikiKernel`；
 - **不跟着变**：项目命名空间（`WikiKernel:`，如 `WikiKernel:关于`）与软件名（`特殊:版本`、`/api/version`、
   导出格式名 WikiKernel XML / JSON）保持 `WikiKernel` —— 对应 MediaWiki 的 `$wgMetaNamespace`，与 `$wgSitename` 是两回事；

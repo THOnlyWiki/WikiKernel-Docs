@@ -45,9 +45,32 @@ core 提供第三方 OAuth 登录 / 注册框架；GitHub / QQ provider 分别�
 
 GitHub 返回已验证邮箱时会同步标记本地邮箱已确认；QQ 通常不返回邮箱。
 
+GitHub 首次自动注册成功后，如果已加载 `social-profile` 插件且「用户交互」功能开启，会尝试把 GitHub
+返回的 `avatar_url` 下载到本地头像存储（校验类型 / 大小，失败静默跳过）；SocialProfile 未加载、功能关闭
+或头像下载失败都不会影响注册与登录。QQ 默认不导入头像。
+
+## QQ 邮箱验证绑定
+
+QQ 插件除了可选的 OAuth 登录外，还提供不依赖 OAuth App 的邮箱验证绑定：用户在
+「特殊:参数设置 → QQ 邮箱绑定」填写数字 QQ 号，插件向 `<QQ号>@qq.com` 发送确认邮件，点击邮件里的
+链接后才完成绑定。只接受数字 QQ 号（不接受英文邮箱别名），邮件始终发送到数字 QQ 对应的 `@qq.com`
+地址；邮件发送失败或链接过期不会写入绑定。可通过 `wikikernel.email.types.qq-email-bind` 单独关闭
+这类邮件。
+
 ## 数据与扩展
 
 绑定表：`wiki_external_identity`（`provider + subject` 的 SHA-256 唯一键，一个本地账号可绑定多个 provider）。
 
-新增 provider 只需在插件中实现 `cc.thonly.wikikernel.common.externalauth.ExternalAuthProvider`，在 `onStart` 里调用 `context.register(ExternalAuthProvider.class, provider)`；配置界面、登录按钮和用户授权列表会根据 provider 声明自动渲染。\n\n当前内置的两个 provider 插件：\n\n- `plugin/external-auth-github`：GitHub OAuth App\n- `plugin/external-auth-qq`：QQ 互联\n\n它们和其他插件一样由 `wikikernel.plugins.enabled` 控制，可在运行时装卸；未加载时对应配置项和登录按钮不会出现。
+新增 provider 只需在插件中实现 `cc.thonly.wikikernel.common.externalauth.ExternalAuthProvider`，在 `onStart` 里调用 `context.register(ExternalAuthProvider.class, provider)`；配置界面、登录按钮和用户授权列表会根据 provider 声明自动渲染。
+
+provider 可通过覆盖 `ExternalAuthProvider.importAvatarOnRegister()` 声明「首次自动注册后导入头像」；
+实际落盘由可选的 `ExternalAuthAvatarBridge` 扩展点完成（`social-profile` 已实现，且受
+`features.social-profile` 开关控制）。没有头像桥时导入自动跳过。
+
+当前内置的两个 provider 插件：
+
+- `plugin/external-auth-github`：GitHub OAuth App
+- `plugin/external-auth-qq`：QQ 互联
+
+它们和其他插件一样由 `wikikernel.plugins.enabled` 控制，可在运行时装卸；未加载时对应配置项和登录按钮不会出现。
 

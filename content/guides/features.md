@@ -706,7 +706,7 @@ wikikernel:
     starttls: true                # 465 端口请改用 ssl: true
     ssl: false
     from: ""                      # 发件人（留空 = username）
-    from-name: WikiKernel
+    from-name: ""                 # 发件人显示名（留空 = 跟随站点名称）
     token-expire-hours: 24        # 确认 / 重置链接有效期
     confirm-cooldown-seconds: 60  # 邮箱确认邮件的发送冷却（秒；0 = 不限制）
     # base-url: https://wiki.example.com   # 邮件链接里的站点地址（留空 = 按请求自动推导）
