@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 /**
- * Generate the public plugin catalog and one docs page per plugin README.
+ * Update the public plugin catalog. Import a README only for a missing page.
  *
- * Source of truth: ../plugin/<id>/README.md in the main WikiKernel repository.
- * Generated files are committed so this docs repository can be built standalone.
+ * Discover plugins from ../plugin/<id>/README.md. Existing docs are edited here;
+ * their titles and descriptions also supply the catalog metadata.
+ * Commit catalog data so this docs repository can be built standalone.
  *
  * Usage (from the docs repository root):
  *   node scripts/sync-plugins.mjs
@@ -38,11 +39,13 @@ const categories = {
 };
 
 const categoryByPlugin = {
+  'cpu-guard': 'site',
   'abuse-filter': 'editing',
   'ai-agent': 'ai',
   'category-tree': 'content',
   comments: 'social',
   'confirm-edit': 'editing',
+  'cpu-guard': 'site',
   'dep-demo': 'dev',
   'dynamic-page-list': 'content',
   'easy-timeline': 'content',
@@ -191,16 +194,31 @@ for (const entry of entries) {
   }
   body = body.replace(/^\uFEFF/, '').replace(/\r\n/g, '\n');
   const h1 = body.match(/^#\s+(.+?)\s*$/m);
-  const title = h1 ? h1[1].trim() : entry.name;
-  const name = title.replace(/[（(].*$/, '').trim() || entry.name;
-  const description = firstDescription(body);
+  let title = h1 ? h1[1].trim() : entry.name;
+  let name = title.replace(/[（(].*$/, '').trim() || entry.name;
+  let description = firstDescription(body);
+  const pagePath = path.join(pluginDocsDir, `${entry.name}.md`);
+  let existingPage;
+  try { existingPage = await readFile(pagePath, 'utf8'); }
+  catch (error) { if (error.code !== 'ENOENT') throw error; }
+  if (existingPage) {
+    const metadata = existingPage.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+    const field = (key) => {
+      const raw = metadata?.[1].match(new RegExp(`^${key}:\\s*(.+)$`, 'm'))?.[1]?.trim();
+      if (!raw) return undefined;
+      try { return JSON.parse(raw); } catch { return raw; }
+    };
+    title = field('title') ?? title;
+    name = field('sidebar_label') ?? title;
+    description = field('description') ?? description;
+  }
   const category = categoryByPlugin[entry.name] ?? 'other';
   const categoryMeta = categories[category] ?? categories.other;
   const content = rewriteLinks(body.replace(/^#\s+.+?\s*$\n?/m, ''), entry.name).trim();
   const source = `https://github.com/THOnlyWiki/WikiKernel/tree/master/plugin/${entry.name}`;
   const docs = `/docs/plugins/${entry.name}`;
   const distribution = entry.name === 'dep-demo' ? false : true;
-  const status = entry.name === 'dep-demo' ? 'demo' : 'stable';
+  const status = entry.name === 'dep-demo' ? 'demo' : 'available';
 
   const frontmatter = [
     '---',
@@ -210,11 +228,13 @@ for (const entry of entries) {
     `description: ${yamlString(description)}`,
     '---',
     '',
-    '<!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->',
+    '<!-- 首次从插件 README 导入；此后在文档仓库维护正文。 -->',
     '',
   ].join('\n');
 
-  await writeFile(path.join(pluginDocsDir, `${entry.name}.md`), frontmatter + content + '\n', 'utf8');
+  if (existingPage === undefined) {
+    await writeFile(pagePath, frontmatter + content + '\n', 'utf8');
+  }
 
   plugins.push({
     id: entry.name,
@@ -251,4 +271,4 @@ await writeFile(
   'utf8',
 );
 
-console.log(`Generated ${plugins.length} plugin pages and src/data/plugins.json`);
+console.log(`Updated catalog for ${plugins.length} plugins; existing documentation preserved.`);

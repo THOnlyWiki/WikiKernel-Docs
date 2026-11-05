@@ -1,49 +1,12 @@
 ---
-title: "CategoryTree（WikiKernel 插件）"
-sidebar_label: "CategoryTree"
-sidebar_position: 10
-description: "MediaWiki CategoryTree 扩展的移植： 用树形结构浏览分类成员，节点可以点开（AJAX 懒加载），另有「特殊:分类树」与 action=categorytree API。"
+title: "分类树"
+sidebar_label: "分类树"
+description: "在页面中嵌入可展开的分类树，按需加载子分类和页面。"
 ---
 
-<!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->
-MediaWiki [`CategoryTree`](https://www.mediawiki.org/wiki/Extension:CategoryTree) 扩展的移植：
-用树形结构浏览分类成员，节点可以点开（AJAX 懒加载），另有「特殊:分类树」与 `action=categorytree` API。
+# 分类树
 
-- 标签：`<categorytree>分类名</categorytree>`（属性即选项）
-- 解析器函数：`{{#categorytree:分类名|mode=all|depth=2|hideroot|…}}`
-- 特殊页：`特殊:分类树` / `Special:CategoryTree`（表单 + 上级分类 + 树）
-- API：`GET /api.php?action=categorytree&category=分类名&options=<JSON>&formatversion=2`
-- 前端：`/plugins/category-tree/ext.categoryTree.js` + `/plugins/category-tree/category-tree.css`
-  （只在页面真的用到分类树时由 `HtmlHeadProvider` 插入 `<head>`）
-
-## 目录结构
-
-```
-plugin/category-tree/
-├── build.gradle
-├── README.md
-├── src/main/java/cc/thonly/wikikernel/plugin/categorytree/
-│   ├── CategoryTreePlugin.java          # 插件入口（注册全部扩展点）
-│   ├── CategoryTreeConfig.java          # 插件配置（kebab-case）
-│   ├── CategoryTreeOptions.java         # 选项解析 / 规范化 / JSON / capDepth（对应 OptionManager）
-│   ├── CategoryTreeRenderer.java        # 树 HTML 渲染（对应 CategoryTree.php）
-│   ├── CategoryTreeMessages.java        # 内置 zh / en 消息
-│   ├── CategoryTreeJson.java            # 极简 JSON（不依赖 Spring / Jackson）
-│   ├── CategoryTreeHtml.java            # HTML 转义 / 元素拼装
-│   ├── CategoryTreeTag.java             # <categorytree>（正文里直接书写，正文不展开）
-│   ├── CategoryTreeNestedTag.java       # 展开后出现的 <categorytree>（模板 / 解析器函数生成）
-│   ├── CategoryTreeFunction.java        # {{#categorytree:…}}
-│   ├── CategoryTreeSpecialPage.java     # 特殊:分类树（对应 CategoryTreePage）
-│   ├── CategoryTreeApiModule.java       # action=categorytree（对应 ApiCategoryTree）
-│   ├── CategoryTreeHeadProvider.java    # 按需插入 JS / CSS（对应 CategoryTree::setHeaders）
-│   ├── CategoryTreeAssetController.java # 插件静态资源端点（@RestController）
-│   └── CategoryTreeSetup.java           # 安装向导
-├── src/main/resources/
-│   ├── META-INF/wiki-plugin.properties、META-INF/services/…WikiPlugin
-│   ├── templates/special/category-tree.html
-│   └── static/plugins/category-tree/ext.categoryTree.js、category-tree.css
-└── src/test/java/…                      # 71 个 JUnit 5 用例（不依赖 Spring）
-```
+在页面中嵌入可展开的分类树，按需加载子分类和页面。
 
 ## 安装与配置
 
@@ -66,6 +29,7 @@ wikikernel:
 
 `/init` 安装向导里有同名 tab（`CategoryTreeSetup`）；`default-mode` / `default-hideprefix` 用下拉框选择。
 
+
 ## 选项（对齐原版 `OptionManager`）
 
 | 选项 | 取值 | 默认 |
@@ -86,6 +50,7 @@ wikikernel:
 {{#categorytree:分类:生物学|mode=pages|namespaces=0|14|showcount}}
 ```
 
+
 ## 前端 AJAX 契约
 
 - 服务端渲染 `.CategoryTreeSection` / `.CategoryTreeItem` / `.CategoryTreeBullet` / `.CategoryTreeToggle`
@@ -96,20 +61,6 @@ wikikernel:
   取 `data.categorytree.html` 填入；空串 → 按 mode 显示 `categorytree-no-*` 提示；请求失败 → 「加载数据出错。 + 重试」；
 - 文案来自服务端内联的 `window.CategoryTreeMessages`（`CategoryTreeHeadProvider` / 特殊页模板），JS 不再依赖 `mw.*`。
 
-## 移植范围（原版文件 → 本插件）
-
-| 原版 | 本插件 | 说明 |
-| --- | --- | --- |
-| `includes/CategoryTree.php` | `CategoryTreeRenderer` | `getTag` / `renderNode` / `renderChildren` / `renderParents` / `renderNodeInfo` / `createCountString` / `makeTitle` 全部实现 |
-| `includes/OptionManager.php` | `CategoryTreeOptions` | 选项解析（含旧数值、名字空间、`capDepth`、`getOptionsAsJsStructure`、缓存键） |
-| `includes/CategoryTreeMode.php`、`CategoryTreeHidePrefix.php` | `CategoryTreeOptions` 常量 | — |
-| `includes/Hooks.php`（parserHook、parserFunction） | `CategoryTreeTag` / `CategoryTreeNestedTag` / `CategoryTreeFunction` | 标签 + 解析器函数 |
-| `includes/CategoryTreePage.php` | `CategoryTreeSpecialPage` + `templates/special/category-tree.html` | 表单、上级分类、树（depth=1） |
-| `includes/ApiCategoryTree.php` | `CategoryTreeApiModule` | `category` / `options`、`{"categorytree":{"html":…}}`、`invalidjson` / `invalidjson-option` |
-| `modules/ext.categoryTree/ext.categoryTree.js` | `static/plugins/category-tree/ext.categoryTree.js` | 原生 DOM + `fetch`，事件委托、懒加载、重试 |
-| `modules/ext.categoryTree.styles.less` | `static/plugins/category-tree/category-tree.css` | 纯 CSS（不用 Codex 图标字体） |
-| `i18n/`、`CategoryTree.alias.php` | `CategoryTreeMessages` | 内置 zh / en 关键消息（含 `categorytree-member-counts`、`num-*`、`not-found` 等）与特殊页别名 `CategoryTree` |
-| `extension.json` 的 `CategoryTreeMaxChildren` / `MaxDepth` / `AllowTag` / `DefaultMode` / `OmitNamespace` | `CategoryTreeConfig` | 其余配置项见「未移植」 |
 
 ## 与 MediaWiki 原版的差异
 
@@ -164,34 +115,4 @@ wikikernel:
 14. **前端**不依赖 `mw.*` / ResourceLoader：消息由服务端内联为 `window.CategoryTreeMessages`，
     请求用 `fetch`（`credentials: same-origin`），事件用 `document` 上的委托。
 
-## 构建与测试
-
-```powershell
-cmd /c "gradlew.bat :plugin:category-tree:test :plugin:category-tree:jar --console=plain"
-```
-
-测试用假的 `CategoryStore` / `WikiPageStore` / `WikiRenderContext` / `ParserTagCall` / `ParserFunctionCall` /
-`ActionApiRequest`（不依赖 Spring），覆盖：选项解析（mode / hideprefix / namespaces / 旧数值 / 布尔）、`capDepth`、
-树结构（箭头、空分类、子分类在前、`display:none`、`hideroot`、`showcount` 计数与 title、notice、parents 模式、
-`max-children`）、分类不存在提示、`action=categorytree`（html 键 / depth / `invalidjson` / `invalidjson-option`）、
-head provider（只在 `categorytree-used=1` 时注入）、特殊页模型、JSON 解析器。
-
-## 疑点（对 common / core 扩展点的观察，未修改 core）
-
-1. **解析器函数无法直接输出可信 HTML**：`ParserFunction` 的返回值会按 wikitext 处理，`data-*` / `aria-*` 等属性会被
-   `HtmlSanitizer` 过滤。目前只能靠「输出标签文本 + `expandBody=true` 的 `ParserTag`」绕行；
-   建议 core 提供 `ParserFunctionCall#trustedHtml(String)`（内部走 `trusted` 占位）之类的显式通道。
-2. **同名 ParserTag 注册两次（raw + expandable）目前可用**（`RenderContextState` 把两者分别放进 `rawTags` /
-   `expandableTags`，`tags` 映射用 `putIfAbsent`），但这一行为没有文档保证；若 core 以后按名字只保留一个实现，
-   「模板里的 `<categorytree>`」会退化成被转义的文本。
-3. **`categorytree-used` 页面属性只在词条阅读路径被读取**（`WikiPageController.applyHeadExtensions`），
-   特殊页不会走 `HtmlHeadProvider`，所以特殊页模板必须自己引入 JS / CSS。
-4. **特殊页的子页参数**只通过兜底键 `page` / `name` 暴露（`SpecialWikiPageServiceImpl`），没有明确的「子页参数」字段；
-   插件按 `target` → `name` → `page` 顺序取值。
-5. **没有分类页 / 侧栏 / 分类行钩子**，所以原版的 4 个钩子（侧栏、分类行劫持、分类页树按钮、追踪分类）
-   在 WikiKernel 上没有对应扩展点。
-6. **`CategoryStore.members` 的 limit 在 SQL 侧生效、`counts` 内部又全量扫描**：插件无法在一次查询里同时拿到
-   「按类型过滤后的前 N 条」与「统计」，这是上面第 6、7 条行为差异的根因。
-7. **`MessageBundle`（插件消息包）** 是本次移植过程中 core 新增的扩展点，可以让插件文案进 core 的 `MessageSource`
-   （模板里写 `#{categorytree.*}`）。本插件为了自包含（也为了避免依赖仍在变动的新接口）保留了内置消息表 +
-   `window.CategoryTreeMessages` 的内联方案；两者不冲突，后续想统一 i18n 时注册一个 `MessageBundle` 即可。
+[源码与开发说明](https://github.com/THOnlyWiki/WikiKernel/tree/master/plugin/category-tree)

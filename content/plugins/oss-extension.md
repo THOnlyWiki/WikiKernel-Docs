@@ -1,12 +1,12 @@
 ---
-title: "OSS Storage 扩展"
-sidebar_label: "OSS Storage 扩展"
-sidebar_position: 43
-description: "把 Wiki 的原图（含历史版本）同步到独立 oss-server，缩略图由 OSS 服务端生成并缓存。扩展通过 core 新增的 FileUrlResolver 改写页面里的文件 URL；OSS 不可用时自动回退本地。"
+title: "对象存储"
+sidebar_label: "对象存储"
+description: "将上传文件及其历史版本同步到 OSS。"
 ---
 
-<!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->
-把 Wiki 的原图（含历史版本）同步到独立 `oss-server`，缩略图由 OSS 服务端生成并缓存。扩展通过 core 新增的 `FileUrlResolver` 改写页面里的文件 URL；OSS 不可用时自动回退本地。
+# 对象存储
+
+将上传文件及其历史版本同步到 OSS。
 
 ## 配置
 
@@ -35,6 +35,7 @@ wikikernel:
 
 插件在 `onStart` 时只负责把变更写入 `data/plugins/oss-extension/outbox/` 下的 properties 小文件，真正的上传由后台虚拟线程完成。单个文件上传失败不会影响 Wiki 保存；OSS 恢复后自动重试。
 
+
 ## 行为
 
 - **任务顺序**：上传 / 删除都带单调序号，避免同一毫秒内的“先上传后删除”被乱序执行。
@@ -46,10 +47,4 @@ wikikernel:
   - `all` 模式：原图接口返回 404；缩略图仍会回退本地生成。
 - **CDN**：`read-url` / `cdn-url` 只影响浏览器读取 URL；写接口始终使用 `operation-url`。
 
-## 构建
-
-```powershell
-.\gradlew.bat :plugin:oss-extension:jar
-```
-
-把 `plugin/oss-extension/build/libs/oss-extension-*.jar` 放到根目录 `plugins/`，或运行 `gradlew installPlugins`。
+[源码与开发说明](https://github.com/THOnlyWiki/WikiKernel/tree/master/plugin/oss-extension)

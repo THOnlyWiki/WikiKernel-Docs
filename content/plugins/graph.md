@@ -1,11 +1,16 @@
 ---
-title: "graph（MediaWiki Graph 扩展移植）"
-sidebar_label: "graph"
-sidebar_position: 14
-description: "标签与 图表: / Graph: 命名空间的整页图：正文是 Vega / Vega-Lite 规范（JSON）， 由本地内置的 Vega 渲染（不走 CDN、不需要 Graphoid 服务，也不需要 headless 浏览器）。"
+title: "图形与图表"
+sidebar_label: "图形与图表"
+description: "通过 graph 标签和图表页面渲染 Vega 图形。"
 ---
 
-<!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->
+# 图形与图表
+
+通过 graph 标签和图表页面渲染 Vega 图形。
+
+
+## 使用
+
 `<graph>` 标签与 `图表:` / `Graph:` 命名空间的**整页图**：正文是 Vega / Vega-Lite 规范（JSON），
 由**本地内置**的 Vega 渲染（不走 CDN、不需要 Graphoid 服务，也不需要 headless 浏览器）。
 
@@ -21,15 +26,6 @@ description: "标签与 图表: / Graph: 命名空间的整页图：正文是 Ve
 - 开关：`features.graph`（默认开启；`/init`、`特殊:权限配置 → 站点设置`、`LocalSettings.yaml` 的 `wikikernel.features.graph` 都可改）。
   关闭后 `<graph>` 按原文转义显示、`图表:` 页面按普通 wikitext 渲染。
 
-## 扩展点
-
-| 扩展点 | 用途 |
-| --- | --- |
-| `ParserTag`（`graph`） | `<graph>` 标签；`@@` 关闭时按原文转义 |
-| `PageDisplayHook.renderBody` | 认领 `图表:` / `Graph:` 命名空间页面的正文 |
-| `HtmlHeadProvider`（`siteWide()`） | 注入 Vega 与 `graph.js`（编辑预览里的 `<graph>` 也能渲染） |
-| `MessageBundle` | `graph.invalid` / `graph.runtimeError` / `graph.needJavaScript` / `graph.vegaMissing` 中英文案 |
-
 ## 与 MediaWiki 原版的差异
 
 - 不依赖 Graphoid（MediaWiki 的 Vega 渲染服务）：规范直接交给浏览器端的 Vega，服务端只做 JSON 形态校验；
@@ -42,3 +38,5 @@ description: "标签与 图表: / Graph: 命名空间的整页图：正文是 Ve
 > core 自动在「特殊:权限配置 → 站点设置 → 插件设置」与 `/init` 的插件 tab 里渲染 / 保存；
 > 插件用 `common.service.SiteConfig` 读同一个键——core 里没有本功能的开关代码，
 > 插件未加载时开关也不出现。
+
+[源码与开发说明](https://github.com/THOnlyWiki/WikiKernel/tree/master/plugin/graph)

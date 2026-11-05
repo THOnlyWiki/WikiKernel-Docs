@@ -1,22 +1,14 @@
 ---
-title: "template-data（TemplateData 移植）"
-sidebar_label: "template-data"
-sidebar_position: 21
-description: "MediaWiki 扩展 TemplateData 0.1.2 的 WikiKernel 移植： 模板参数的 JSON 数据（ 标签）解析、校验、规范化、页面属性存储、文档表格渲染， 以及 action=templatedata API。"
+title: "模板参数说明"
+sidebar_label: "模板参数说明"
+description: "保存和查询模板参数说明，为编辑工具提供模板元数据。"
 ---
 
-<!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->
-MediaWiki 扩展 [TemplateData](https://www.mediawiki.org/wiki/Extension:TemplateData) 0.1.2 的 WikiKernel 移植：
-模板参数的 JSON 数据（`<templatedata>` 标签）解析、校验、规范化、页面属性存储、文档表格渲染，
-以及 `action=templatedata` API。
+# 模板参数说明
 
-- 移植基线：MediaWiki **REL1_43**、TemplateData **0.1.2**（参考源码
-  `includes/TemplateDataBlob.php`、`TemplateDataValidator.php`、`TemplateDataNormalizer.php`、
-  `TemplateDataStatus.php`、`TemplateDataHtmlFormatter.php`、`Api/ApiTemplateData.php`、`Hooks.php`）。
-- 插件 id：`template-data`，入口 `cc.thonly.wikikernel.plugin.templatedata.TemplateDataPlugin`。
-- 只用 `common` 的扩展点（`ParserTag` / `ActionApiModule` / `WikiRenderContext`），**不修改 core / common**。
+保存和查询模板参数说明，为编辑工具提供模板元数据。
 
-## 1. 功能范围
+## 功能范围
 
 ### 1.1 `<templatedata>` 解析标签
 
@@ -80,7 +72,8 @@ MediaWiki 扩展 [TemplateData](https://www.mediawiki.org/wiki/Extension:Templat
   core 会输出 `{"error":{"code":"templatedata-corrupt","info":"页面#7模板数据包含无效数据：…"}}`。
 - `formatversion` 由 core 统一序列化（json / jsonfm / xml / jsonp），插件不做特殊处理。
 
-## 2. 配置（`LocalSettings.yaml`）
+
+## 配置（`LocalSettings.yaml`）
 
 ```yaml
 wikikernel:
@@ -91,52 +84,8 @@ wikikernel:
         generate-param-order: false  # true = 规范化时自动补 paramOrder（非原版行为，见 3.1）
 ```
 
-## 3. 数据模型（照规范 / REL1_43 实现）
 
-根对象：`description`（接口文本）、`params`（必需，对象）、`paramOrder`（字符串数组）、`sets`（数组）、
-`maps`（对象）、`format`（`inline` / `block` / 自定义格式字符串）。
-
-参数（`params` 的每个值）：
-
-| 键 | 取值 | 规范化后的默认值 |
-| --- | --- | --- |
-| `label` / `description` / `default` / `example` | 接口文本（字符串或 `{语言: 字符串}`） | `null` |
-| `required` / `suggested` | 布尔 | `false` |
-| `deprecated` | 布尔或说明字符串 | `false` |
-| `aliases` | int/string 数组 | `[]`（整数转字符串） |
-| `type` | `unknown` `string` `line` `content` `boolean` `number` `date` `url` `wiki-page-name` `wiki-user-name` `wiki-file-name` `wiki-template-name` `unbalanced-wikitext`（+ 已废弃的 `string/line`、`string/wiki-page-name`、`string/wiki-user-name`、`string/wiki-file-name`） | `unknown` |
-| `autovalue` | 字符串 | `null` |
-| `suggestedvalues` | 字符串数组 | `[]` |
-| `inherits` | 父参数名；规范化时把父参数里没有的键复制过来并删除本键 | — |
-
-`sets[]`：`label`（必需，接口文本）+ `params`（必需，非空字符串数组，必须是已声明的参数名）。
-`maps`：`{消费方: {变量: 参数名 | [参数名…] | [[参数名…]…]}}`。
-
-### 3.1 规范化实际做了什么（与 REL1_43 一致）
-
-1. 根补 `description=null`、`sets=[]`、`maps={}`、`format=null`、`params={}`；
-2. 每个参数补 `label/description/default/example=null`、`required/suggested/deprecated=false`、
-   `aliases=[]`、`type="unknown"`、`autovalue=null`、`suggestedvalues=[]`；
-3. `inherits` 展开（父参数已有的键、本参数未写的才复制，对象 / 数组深拷贝）；
-4. 纯字符串接口文本 → `{"<内容语言>": "…"}`（多语言对象原样保留）；
-5. `aliases` 里的整数转字符串；废弃 `type` 映射成新类型。
-
-> 注意：原版**不会**给参数名做 trim、**不会**把 aliases 拆成独立参数（规范要求别名记在主参数上）、
-> **不会**自动生成 `paramOrder`；`paramOrder` 只在作者写了时保留并校验，渲染 / API 输出时缺省按参数
-> 出现顺序回退。本移植以源码为准。若确实需要规范化时补 `paramOrder`，可以打开
-> `generate-param-order: true`（默认关闭，**这是本移植新增的开关，不是原版行为**）。
-
-### 3.2 接口文本的语言回退
-
-`getDataInLanguage(lang)` 的查找顺序（对应原版 `LanguageFallback::getAllIncludingSiteLanguage`）：
-
-1. 请求语言 → 2. 其主语言（`zh-hans` → `zh`、`de-formal` → `de`）→ 3. 站点内容语言（配置项）→
-4. 站点内容语言的主语言 → 5. `en`。
-
-可选属性（`description` / `label` / `default` / `example`）找不到合适语言时返回 `null`；
-`sets[].label` 不是可选属性，全部不匹配时退化成对象里的第一个值（对齐原版注释）。
-
-## 4. 未移植的部分（有意省略）
+## 未移植的部分（有意省略）
 
 | 原版功能 | 说明 |
 | --- | --- |
@@ -181,22 +130,4 @@ wikikernel:
 - 原版按站点语言（`$wgLanguageCode`）写接口文本的键；本移植取 `content-language` 配置，
   默认跟随 JVM 系统语言（见 `TemplateDataMessages#defaultContentLanguage()`）。
 
-## 5. 构建与测试
-
-```powershell
-# 编译 + 单元测试 + 打包
-cmd /c "gradlew.bat :plugin:template-data:test :plugin:template-data:jar --console=plain"
-# 安装到根目录 plugins/（和其它插件一起）
-cmd /c "gradlew.bat installPlugins --console=plain"
-```
-
-测试（JUnit 5，不需要 Spring / 数据库）：
-
-| 测试类 | 覆盖内容 |
-| --- | --- |
-| `TemplateDataBlobTest` | 合法 JSON 的规范化（默认值 / paramOrder 保留 / 接口文本 / inherits / sets / maps / format）、循环往返、深拷贝、原版 PHPUnit 里的代表性校验错误（类型错误、未知属性、unnamed-parameter、sets / maps / paramOrder 的取值与重复）、`getDataInLanguage` 的语言回退 |
-| `TemplateDataHtmlFormatterTest` | 文档表格关键片段（参数名 / 别名 / 状态 required\|suggested\|optional\|deprecated / 类型 / 描述 / 默认值 / 示例值 / 推荐值 / 自动值）、format 提示、中英文消息、用户数据转义、错误框 |
-| `ApiTemplateDataTest` | 假 `ActionApiRequest`（properties / content / resolvePages）：`pages` 输出结构、默认跳过无数据页面、`includeMissingTitles`（missing / notemplatedata / 原始参数提取）、`lang` 解析、`templatedata-corrupt`、重复标题去重、`rawParams` 的原版规则 |
-| `TemplateDataTagTest` | 页面属性写入、错误框且不写属性、`/文档`、`/doc` 子页面不写属性、样式片段只输出一次、中英文渲染 |
-| `TemplateDataPluginTest` | 插件描述与扩展点注册、配置默认值 |
-| `JsonTest` | 自带 JSON 解析 / 序列化：对象与数组区分、键顺序、整数与小数、Unicode 转义、非法输入 |
+[源码与开发说明](https://github.com/THOnlyWiki/WikiKernel/tree/master/plugin/template-data)

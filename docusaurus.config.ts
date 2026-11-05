@@ -7,7 +7,7 @@ const baseUrl = process.env.DOCUSAURUS_BASE_URL ?? '/';
 
 const config: Config = {
   title: 'WikiKernel',
-  tagline: '用 Java 重写的 MediaWiki 风格 Wiki 引擎',
+  tagline: '安装、使用和维护 WikiKernel',
   favicon: 'img/logo.svg',
 
   url: siteUrl,
@@ -21,7 +21,7 @@ const config: Config = {
   organizationName: 'THOnlyWiki',
   projectName: 'WikiKernel-Docs',
 
-  onBrokenLinks: 'warn',
+  onBrokenLinks: 'throw',
 
   i18n: {
     defaultLocale: 'zh-Hans',

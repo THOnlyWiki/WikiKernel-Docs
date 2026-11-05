@@ -1,28 +1,14 @@
 ---
-title: "fingerprint-login（浏览器数字指纹登录）"
-sidebar_label: "fingerprint-login"
-sidebar_position: 34
-description: "用浏览器指纹免密码登录：用户可以在多个浏览器上登记指纹（每用户最多 10 个）， 登录页出现「用浏览器指纹登录」按钮，点一下就能登录；登记的指纹可以随时在 特殊:参数设置 → 指纹登录 或 特殊:指纹登录 里查看与删除。"
+title: "浏览器指纹登录"
+sidebar_label: "浏览器指纹登录"
+description: "为已绑定的浏览器提供指纹识别登录。"
 ---
 
-<!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->
-用**浏览器指纹**免密码登录：用户可以在多个浏览器上登记指纹（每用户最多 10 个），
-登录页出现「用浏览器指纹登录」按钮，点一下就能登录；登记的指纹可以随时在
-`特殊:参数设置 → 指纹登录` 或 `特殊:指纹登录` 里查看与删除。
+# 浏览器指纹登录
 
-| 部分 | 说明 |
-| --- | --- |
-| 开关 | `features.fingerprint-login`（**默认关闭**；`特殊:权限配置 → 站点设置` 或 `LocalSettings.yaml` 的 `wikikernel.features` 可开）。core 维护这个键，插件经 `SiteConfig` 读它 |
-| 插件配置 | `LocalSettings.yaml → wikikernel.plugins.settings.fingerprint-login.https-only = true`：只允许安全上下文（HTTPS / localhost）使用指纹登录 |
-| 数据表 | `wiki_fingerprint`（`id` / `user_id` / `label` / `fingerprint_hash` / `user_agent` / `created_at` / `last_used_at`；实体在插件内，core 按 `FingerprintLoginPlugin.schemaEntities()` 自动建表 / 补列）。`fingerprint_hash` 全局唯一 |
-| 数据访问 | 表 / 实体属于插件自己：`service/FingerprintStoreJdbc` 经 `common.service.PluginDatabase` 裸 SQL 读写；会话建立是 `service/LoginSessionImpl`（走 core 的只读用户桥 `UserAdminStore.byId`）；限流仍走 `common.service.RateLimit` |
-| 接口 | `POST /api/fingerprint-login`（登录）、`GET /api/fingerprint-login/list`、`POST /api/fingerprint-login/add`、`DELETE /api/fingerprint-login/remove` |
-| 前端脚本 | `/plugins/fingerprint-login/fingerprint-login.js`（站点级注入；脚本自己判断当前页是登录页还是管理界面） |
-| 管理入口 | 参数设置分区 `PreferenceSection(id = fingerprint-login)` + 特殊页 `特殊:指纹登录`（别名 `Special:FingerprintLogin`），两者共用同一批接口 |
-| 文案 | `i18n/messages.properties`（中文）/ `i18n/messages_en.properties`（英文）；漏翻的键直接显示键名 |
-| 测试 | `plugin/fingerprint-login/src/test/...`（业务 + 接口 + 装配，以及 H2 上的 `FingerprintStoreJdbcTest` 与不启动 Spring 的 `LoginSessionImplTest`） |
+为已绑定的浏览器提供指纹识别登录。
 
-## 安全说明（重要）
+## 安全说明
 
 **指纹登录是「便利凭据」，比密码弱。** 它把「能打开这台浏览器」当成了身份证明：
 
@@ -45,6 +31,7 @@ description: "用浏览器指纹免密码登录：用户可以在多个浏览器
 | 可选仅 HTTPS | 插件配置 `fingerprint-login.https-only = true` 时，非安全上下文（http + 非 localhost）直接拒绝；浏览器端在非安全上下文本来就拿不到 `crypto.subtle`，会隐藏按钮并提示 |
 | 可随时撤销 | 用户可自助删除指纹（删除后那台浏览器立即失去登录能力）；表里没有长期令牌，不需要「退出所有设备」这类操作 |
 | 上限 | 每用户最多 10 个指纹，避免无限堆积 |
+
 
 ## 指纹采集与 hash 方案
 
@@ -73,6 +60,7 @@ webgl=<WEBGL_debug_renderer_info 的 UNMASKED_VENDOR_WEBGL / UNMASKED_RENDERER_W
 - `crypto.subtle` 在非安全上下文不可用（http + 非 localhost）→ 脚本隐藏登录 / 添加按钮并给出提示，
   服务端在开了「仅 HTTPS 允许」时也会独立拒绝（前端隐藏不是安全边界）。
 
+
 ## 登录桥（会话内容与密码登录一致）
 
 core 的密码登录成功分支是：
@@ -97,6 +85,7 @@ core 的 `CurrentUser`、模板、权限判断读到的就是同一个用户。
 本桥不做（`UserSession.login` 本身也不涉及）。这条一致性由插件的 `LoginSessionImplTest` 断言
 （同一个属性名、同一个脱敏口令、同一个 30 天 / 30 分钟间隔、logout 使会话失效）。
 
+
 ## 与其它实现方式的差异
 
 - 不用 Cookie / localStorage 存任何「指纹令牌」：指纹摘要本身就是凭据，浏览器不需要保存状态；
@@ -108,3 +97,5 @@ core 的 `CurrentUser`、模板、权限判断读到的就是同一个用户。
 > core 自动在「特殊:权限配置 → 站点设置 → 插件设置」与 `/init` 的插件 tab 里渲染 / 保存；
 > 插件用 `common.service.SiteConfig` 读同一个键——core 里没有本功能的开关代码，
 > 插件未加载时开关也不出现。
+
+[源码与开发说明](https://github.com/THOnlyWiki/WikiKernel/tree/master/plugin/fingerprint-login)

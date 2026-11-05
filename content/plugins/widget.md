@@ -1,13 +1,24 @@
 ---
-title: "widget（MediaWiki Widgets 扩展移植）"
-sidebar_label: "widget"
-sidebar_position: 24
-description: "微件 = 微件: / Widget: 命名空间下的页面，内容是 HTML + 迷你 Smarty；在任意页面用 {{#widget:名称|参数=值}} 调用，输出原样插入（可信块，不经过 HTML 白名单）。"
+title: "微件"
+sidebar_label: "微件"
+description: "在受权限限制的微件页面保存 HTML 模板，并从正文调用。"
 ---
 
-<!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->
-微件 = `微件:` / `Widget:` 命名空间下的页面，内容是 **HTML + 迷你 Smarty**；在任意页面用
-`{{#widget:名称|参数=值}}` 调用，输出**原样插入**（可信块，不经过 HTML 白名单）。
+# 微件
+
+在受权限限制的微件页面保存 HTML 模板，并从正文调用。
+
+## 创建和调用
+
+在“微件:”命名空间创建 HTML 模板，在词条正文中调用：
+
+```text
+{{#widget:示例|id=abc|width=420}}
+```
+
+微件由 `features.widgets` 控制。微件输出可包含 HTML，编辑权限应只授予可信用户；普通词条编辑权不应自动获得微件编辑权。
+
+## 用法示例
 
 ```text
 {{#widget:示例|id=abc|width=420}}
@@ -16,15 +27,6 @@ description: "微件 = 微件: / Widget: 命名空间下的页面，内容是 HT
 {{#widget:示例|flag}}                     ← 无值 = true；flag=false = 布尔假
 ```
 
-Smarty 子集（与迁移前 core 一致）：`<!--{$var}-->`、修饰符 `escape:'html'|'url'|'js'`、`urlencode`、
-`default:'x'`、`lower` / `upper` / `replace:'a':'b'` / `strip_tags` / `trim`（可链式）、
-`<!--{if}--> / elseif / else / /if`、`<!--{foreach from=$x item=y}-->`、`<!--{* 注释 *}-->`。
-与 Smarty 相同：**不自动转义**，引用参数请自己 `|escape`。
-
-- 开关：`features.widgets`（默认开启；旧配置 `wikikernel.widgets.enabled: false` 仍兼容——core 启动时
-  会把它写进站点设置 `features.widgets`）；
-- 命名空间前缀可用插件配置覆盖（默认 `微件:` / `Widget:`）：
-
 ```yaml
 wikikernel:
   plugins:
@@ -32,18 +34,6 @@ wikikernel:
       widget:
         prefixes: 微件:,Widget:
 ```
-
-- 找不到微件 / 模板语法错误 / 功能关闭时显示本地化错误提示，不影响页面其余内容；
-- 微件页仍是 core 的 **HTML 代码页**（只读高亮预览 + HTML 编辑器），编辑权默认只有「小部件编辑者」
-  （对应 MediaWiki 的 `editwidgets`，管理员不豁免）——这部分属于 core 的命名空间与权限规则，未迁入插件。
-
-## 扩展点
-
-| 扩展点 | 用途 |
-| --- | --- |
-| `ParserFunction`（`widget`） | `{{#widget:…}}`；参数用 `call.expand(...)` 按当前 frame 展开，输出用 `call.trustedHtml(...)` 登记为可信块 |
-| `WikiPageStore.visibleByTitle` | 解析微件页（按查看权限过滤，避免把无权页面内容带进正文） |
-| `MessageBundle` | `widget.error.*` 文案（键与迁移前 core 一致） |
 
 ## 与 MediaWiki 原版的差异
 
@@ -57,3 +47,5 @@ wikikernel:
 > core 自动在「特殊:权限配置 → 站点设置 → 插件设置」与 `/init` 的插件 tab 里渲染 / 保存；
 > 插件用 `common.service.SiteConfig` 读同一个键——core 里没有本功能的开关代码，
 > 插件未加载时开关也不出现。
+
+[源码与开发说明](https://github.com/THOnlyWiki/WikiKernel/tree/master/plugin/widget)

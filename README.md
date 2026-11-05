@@ -1,120 +1,42 @@
-# WikiKernel Docs
+# WikiKernel 文档站
 
-WikiKernel 的文档与项目网站，使用 [Docusaurus](https://docusaurus.io/) 构建。
+本站使用 Docusaurus。正文位于 `content/`，首页和插件目录位于 `src/pages/`，导航在 `sidebars.ts`。
 
-这个仓库是主仓库 `THOnlyWiki/WikiKernel` 的 `docs/` 子模块。文档内容与主仓库代码分开管理，但插件页面的来源仍然是主仓库的 `plugin/*/README.md`。
+## 本地预览
 
-## 本地开发
-
-需要 Node.js 20+。
-
-```bash
-npm install
-npm start
-```
-
-默认打开 <http://localhost:3000>。
-
-## 构建
-
-```bash
-npm run build
-npm run serve
-```
-
-构建产物在 `build/`。
-
-## 同步插件文档
-
-在包含主仓库的目录结构中运行：
-
-```bash
-npm run sync:plugins
-```
-
-默认读取 `../plugin`。也可以指定：
-
-```bash
-WIKIKERNEL_PLUGIN_DIR=/path/to/WikiKernel/plugin npm run sync:plugins
-```
-
-脚本会：
-
-- 为每个公开插件生成 `content/plugins/<id>.md`
-- 生成插件目录数据 `src/data/plugins.json`
-- 跳过私有仓库/皮肤 `kawaii-timeless` 与 `thonly-wiki-extensions`
-
-生成结果需要提交；这样 docs 仓库单独 clone 时也能直接构建。
-
-## 目录
-
-```text
-content/                 Markdown 文档
-  getting-started/       快速开始
-  deployment/            Docker、配置
-  guides/                Wikitext、完整功能
-  administration/        配置参考、第三方登录
-  development/           插件、皮肤、Mixin
-  api/                   API 概览与完整参考
-  plugins/               插件页面（生成）
-src/
-  pages/                 首页与插件目录
-  components/            插件卡片、筛选器
-  data/                  生成的数据
-  css/                   主题样式
-examples/docker/         Docker 示例
-scripts/sync-plugins.mjs 插件同步脚本
-```
-
-## 部署
-
-### 首次发布
-
-如果远端仓库尚未创建，请先在 GitHub 创建空的 `THOnlyWiki/WikiKernel-Docs`，然后：
-
-```bash
-git remote add origin https://github.com/THOnlyWiki/WikiKernel-Docs.git
-git push -u origin main
-```
-
-### GitHub Pages
-
-`.github/workflows/deploy.yml` 已配置 GitHub Pages 构建与发布。推送到 `main` 后启用仓库的 Pages（Source 选 GitHub Actions）即可。
-
-站点使用 Hash Router，页面地址形如：
-
-```text
-https://thonlywiki.github.io/WikiKernel-Docs/#/docs/getting-started/quickstart
-```
-
-因此即使部署在 `/WikiKernel-Docs/` 子路径，路由也不需要服务器做 SPA fallback。
-
-### Cloudflare Pages / 其他静态托管
-
-构建命令：
+需要 Node.js 20 或更新版本。在文档目录运行：
 
 ```bash
 npm ci
+npm start
+```
+
+默认地址为 `http://localhost:3000`。
+
+提交前运行：
+
+```bash
+npm run check:links
+npm run typecheck
 npm run build
 ```
 
-输出目录：`build`
+产物在 `build/`。用 `npm run serve` 可预览构建结果。
 
-Hash Router 下 `baseUrl` 保持 `/`，即使站点部署在子路径（例如 `/docs/`）也不要改；页面路由在 hash 中：
+## 内容维护
 
-```bash
-DOCUSAURUS_URL=https://example.com npm run build
-```
+安装、使用、管理、API 和开发资料分别放在对应目录中。操作说明直接写入口、步骤和结果；接口参数和配置表留在参考页，避免在多处复制。
 
-产物只有 `build/index.html` 和静态资源，上传整个 `build/` 即可。
+插件页面的正文在本站维护。运行 `npm run sync:plugins` 会读取主仓库的插件列表、更新目录数据；已有文档不会被 README 覆盖。新插件首次导入后需要人工整理，源码目录的 README 保留实现和开发记录。
 
-## 内容约定
+默认从 `../plugin` 读取插件，也可设置环境变量 `WIKIKERNEL_PLUGIN_DIR` 指定目录。目录同步后需检查新增页面、侧栏分类和链接。`kawaii-timeless` 与 `thonly-wiki-extensions` 不在公开目录中。
 
-- 中文为主，代码、配置键和 API 参数保持英文。
-- 每篇操作文档尽量包含：目标、前置条件、步骤、验证方式、常见错误。
-- 长文档按任务拆分；不要把所有功能堆在一个页面。
-- 配置键和插件说明优先链接到单一事实来源，避免复制后失同步。
+不要把迁移过程、临时排查记录或未验证的兼容性承诺写进使用说明。需要说明限制时，写出受影响的操作与实际支持范围。
 
-## 许可证
+## 发布
 
-文档内容与 WikiKernel 主项目一致，使用 GPLv3；第三方资源遵循各自许可证。
+构建并上传完整的 `build/`。站点使用 Hash Router，文档链接形如 `/#/docs/intro`；不要自行改写为普通路径路由。
+
+`.github/workflows/deploy.yml` 提供 GitHub Pages 发布流程。其他静态托管使用 `npm ci`、`npm run build`，输出目录为 `build`。站点域名由 `DOCUSAURUS_URL` 配置；部署到子目录前应核对托管路径、静态资源地址和路由。
+
+文档站是主仓库的 `docs/` 子模块，修改在文档仓库内单独管理。

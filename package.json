@@ -11,7 +11,8 @@
     "clear": "docusaurus clear",
     "deploy": "docusaurus deploy",
     "typecheck": "tsc",
-    "sync:plugins": "node scripts/sync-plugins.mjs"
+    "sync:plugins": "node scripts/sync-plugins.mjs",
+    "check:links": "node scripts/check-links.mjs"
   },
   "dependencies": {
     "@docusaurus/core": "3.10.2",
@@ -27,7 +28,10 @@
     "@docusaurus/tsconfig": "3.10.2",
     "@docusaurus/types": "3.10.2",
     "@types/react": "^19.0.0",
-    "typescript": "~6.0.2"
+    "typescript": "~6.0.2",
+    "unified": "11.0.5",
+    "remark-parse": "11.0.0",
+    "github-slugger": "1.5.0"
   },
   "browserslist": {
     "production": [

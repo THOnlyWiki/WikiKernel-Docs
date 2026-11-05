@@ -1,15 +1,12 @@
 ---
-title: "dep-demo（插件平台能力演示 / 测试用插件）"
-sidebar_label: "dep-demo"
-sidebar_position: 80
-description: "plugin.id=dep-demo plugin.requires= # 运行期依赖（本插件留空 = 不依赖其它插件） plugin.requiresCore=>=0.0.1 # core 版本约束（数字段比较，0.0.1-SNAPSHOT 也满足） plugin.clientRequires=comments # 前端资源依赖：comments 的 he…"
+title: "插件依赖示例"
+sidebar_label: "插件依赖示例"
+description: "演示插件依赖、启动顺序和共享服务，供开发时参考。"
 ---
 
-<!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->
-> **不是 MediaWiki 扩展移植**：这是仓库自带的最小**测试插件**，用来验证插件平台的四项能力：
-> 运行期插件依赖（`plugin.requires`）、core 版本约束（`plugin.requiresCore`）、
-> 插件对 core 的 AOP（`CoreAopHook`）、客户端运行时插件需求（`plugin.clientRequires`）。
-> 它只依赖 `common`（core 的类名以字符串出现），因此满足 `:checkPluginDependencies`。
+# 插件依赖示例
+
+演示插件依赖、启动顺序和共享服务，供开发时参考。
 
 ## 描述文件（`META-INF/wiki-plugin.properties`）
 
@@ -21,6 +18,7 @@ plugin.clientRequires=comments   # 前端资源依赖：comments 的 head 片段
 plugin.aop=true                  # 声明需要插件 AOP 桥（默认 auto 只有声明了才启用）
 ```
 
+
 ## 它做了什么
 
 | 扩展点 | 作用 |
@@ -30,14 +28,6 @@ plugin.aop=true                  # 声明需要插件 AOP 桥（默认 auto 只�
 | `MessageBundle`（`DepDemoMessages`） | 插件名 / 描述的本地化文案（`i18n/messages*.properties`，中英键集合一致） |
 | `@Component DepDemoService` | 插件自己的业务 Bean（被上面第 ② 个切面命中） |
 
-## 相关测试
-
-- **插件自身**：`DepDemoAopHookTest`（两个切面各自只命中目标类型 / 方法，且只计数、不改返回值）——
-  `.\gradlew.bat :plugin:dep-demo:build`
-- **core 侧集成**：`core` 的 `DepDemoPluginTest` 用真实的 dep-demo jar（`plugin/dep-demo/build/libs/`）启动一次应用，断言：
-  插件被加载、`PluginManager.clientLoadOrder()` 含 `dep-demo`、`clientDependencyWarnings()` 在 comments 未加载时给出 HTML 注释、
-  core Bean 被切面命中（`GET_CALLS` 增加）、插件自己的 Bean 也被切面命中（`GREET_CALLS` 增加）。
-  先构建插件：`.\gradlew.bat :plugin:dep-demo:build`；没有 jar 时该测试自动跳过。
 
 ## 需要注意
 
@@ -48,3 +38,5 @@ plugin.aop=true                  # 声明需要插件 AOP 桥（默认 auto 只�
 - core 不带 `aspectjweaver`，所以 pointcut 用 Spring 原生实现（`NameMatchMethodPointcut` + `ClassFilter`），
   不能用 `@Aspect` / `execution(...)`（`AspectJExpressionPointcut`）；
 - 统计值放在静态字段上，是为了让 core 侧测试在**没有编译期依赖**的前提下读回来（插件与 core 只共享 `common`）。
+
+[源码与开发说明](https://github.com/THOnlyWiki/WikiKernel/tree/master/plugin/dep-demo)

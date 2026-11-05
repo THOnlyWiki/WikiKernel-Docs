@@ -1,11 +1,16 @@
 ---
-title: "gadgets（MediaWiki Gadgets 扩展移植）"
-sidebar_label: "gadgets"
-sidebar_position: 13
-description: "定义页 WikiKernel:Gadgets-definition，资源页在 Gadget: / 小部件: 命名空间："
+title: "Gadgets"
+sidebar_label: "Gadgets"
+description: "为站点安装可由用户选择启用的 JavaScript 和 CSS 小工具。"
 ---
 
-<!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->
+# Gadgets
+
+为站点安装可由用户选择启用的 JavaScript 和 CSS 小工具。
+
+
+## 使用
+
 定义页 `WikiKernel:Gadgets-definition`，资源页在 `Gadget:` / `小部件:` 命名空间：
 
 ```text
@@ -26,18 +31,6 @@ description: "定义页 WikiKernel:Gadgets-definition，资源页在 Gadget: / �
 - **管理**：`特殊:Gadgets`（`特殊:小部件管理`）列出定义、资源与启用状态；定义页 / 资源页的编辑权由 core 的
   访问控制规则决定（「小部件管理员」可编辑，普通「小部件编辑者」只管 Widgets）。
 
-## 扩展点
-
-| 扩展点 | 用途 |
-| --- | --- |
-| `PreferenceSection` | 参数设置里的「小工具」标签页（core 动态渲染标签 + 面板） |
-| `HtmlHeadProvider`（`siteWide()`） | 注入 Gadget 的 CSS / JS 与 `WIKI_CONFIG.gadgetDependencies` |
-| `SpecialPage` | `特殊:Gadgets`（插件自带模板 `templates/special/gadgets.html`） |
-| `@RestController` | `POST /api/gadgets/preferences`（保存个人偏好） |
-| `common.service.UserSettings` | 读写 `wiki_user.gadgets`（core 的用户偏好桥） |
-| `common.service.CurrentUser` | 当前用户与用户组（`rights=` 过滤、匿名只加载默认 Gadget） |
-| `MessageBundle` | `gadget.*` / `gadgets.*` 文案（core 里已删除同名键） |
-
 ## 与 MediaWiki 原版的差异
 
 - 没有 ResourceLoader：Gadget 脚本以经典 `<script src>` 加载（不是模块），`dependencies=…` 只用于
@@ -53,3 +46,5 @@ description: "定义页 WikiKernel:Gadgets-definition，资源页在 Gadget: / �
 > core 自动在「特殊:权限配置 → 站点设置 → 插件设置」与 `/init` 的插件 tab 里渲染 / 保存；
 > 插件用 `common.service.SiteConfig` 读同一个键——core 里没有本功能的开关代码，
 > 插件未加载时开关也不出现。
+
+[源码与开发说明](https://github.com/THOnlyWiki/WikiKernel/tree/master/plugin/gadgets)

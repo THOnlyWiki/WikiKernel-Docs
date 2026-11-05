@@ -1,31 +1,21 @@
 ---
-title: "confirm-edit（MediaWiki ConfirmEdit 扩展移植）"
-sidebar_label: "confirm-edit"
-sidebar_position: 21
-description: "编辑 / 创建页面时的算术验证码：未豁免用户（含匿名）打开编辑页时，编辑框下方出现一道随机加法题 （题面与答案存会话，一次一题）；保存时由插件校验，答错回到编辑表单（已填内容与摘要保留）并换一道新题。"
+title: "编辑验证码"
+sidebar_label: "编辑验证码"
+description: "在页面编辑表单中加入算术题，并在保存前校验答案。"
 ---
 
-<!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->
-编辑 / 创建页面时的**算术验证码**：未豁免用户（含匿名）打开编辑页时，编辑框下方出现一道随机加法题
-（题面与答案存会话，一次一题）；保存时由插件校验，答错回到编辑表单（**已填内容与摘要保留**）并换一道新题。
+# 编辑验证码
+
+在页面编辑表单中加入算术题，并在保存前校验答案。
+
+## 用法示例
 
 ```text
 编辑框下方的插件字段：
 请回答验证题（防机器人）：  6 + 7 =   [ 答案（数字） ]
 ```
 
-## 扩展点
-
-| 扩展点 | 用途 |
-| --- | --- |
-| `EditFormField` | 编辑框下方插入题目 + 答案输入框（字段名 `captchaAnswer`，与迁移前 core 模板一致） |
-| `EditGuard` | 保存前校验答案：答对 `ALLOW`；答错 / 没带答案 / 会话里没有题目 → `BLOCK("验证答案不正确，请重试。")` |
-| `MessageBundle` | `confirmEdit.*` 文案（键名与迁移前 core 完全相同；core 里已删除同名键） |
-
-保存前钩子**只拦网页编辑表单**：`api.php?action=edit` 的来源是 `EditContext.SOURCE_API`，
-插件直接放行——与迁移前一致（ConfirmEdit 不影响 Action API）。
-
-## 配置（**仍留在 core**，插件通过 `common.service.SiteConfig` 读同一批键）
+## 配置
 
 | 设置键 | 说明 | 默认 |
 | --- | --- | --- |
@@ -38,6 +28,7 @@ description: "编辑 / 创建页面时的算术验证码：未豁免用户（含
 - 站点设置里**显式留空**免验证组 = 无人豁免（所有人都要答题）；键不存在时用默认值；
 - 插件读写同一批设置键（经 `common.service.SiteConfig` 读、启动导入时写；core 里没有 ConfirmEdit 代码）。
 
+
 ## 机制
 
 - 题目：`1..9` 的两个随机加数（`6 + 7 =`），题面与答案存**会话**
@@ -45,6 +36,7 @@ description: "编辑 / 创建页面时的算术验证码：未豁免用户（含
 - 同一会话里重复渲染编辑页不会换题；**校验时无论对错都消耗题目**（防重放 / 防爆破），
   所以答错后回到编辑页会自动换一道新题；
 - 答案宽容：忽略首尾空白与非数字字符（`" 2 分 "` = `2`）。
+
 
 ## 与 MediaWiki 原版的差异
 
@@ -57,3 +49,5 @@ description: "编辑 / 创建页面时的算术验证码：未豁免用户（含
   （`$wgCaptchaTriggersOnNamespace` / `$wgCaptchaBadLoginAttempts` 等），免验证只按用户组；
 - 题面存在会话里（MediaWiki 也存在 session），因此**多标签页 / 刷新**会共用同一道题，
   而服务器重启 / 会话失效后需要重新答题（此时保存会提示答错并给出新题）。
+
+[源码与开发说明](https://github.com/THOnlyWiki/WikiKernel/tree/master/plugin/confirm-edit)

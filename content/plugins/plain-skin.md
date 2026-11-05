@@ -1,20 +1,12 @@
 ---
-title: "plain-skin（额外的 plain 皮肤插件）"
-sidebar_label: "plain-skin"
-sidebar_position: 50
-description: "一个皮肤插件（不是功能扩展移植）：注册精简的 plain 皮肤 —— 居中卡片、无侧栏。"
+title: "Plain 皮肤"
+sidebar_label: "Plain 皮肤"
+description: "提供独立的页面布局和样式，作为可安装皮肤使用。"
 ---
 
-<!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->
-一个**皮肤插件**（不是功能扩展移植）：注册精简的 `plain` 皮肤 —— 居中卡片、无侧栏。
-MediaWiki 侧没有对应扩展页，皮肤机制见官方手册 [Manual:Skins](https://www.mediawiki.org/wiki/Manual:Skins)。
+# Plain 皮肤
 
-- 插件 id：`plain-skin`；模块：`:plugin:plain-skin`；入口类 `PlainSkinPlugin`，皮肤实现 `PlainSkin`；
-- 布局与样式都在插件 jar 内：`templates/skins/plain/layout.html` + `static/skins/plain/plain.css`
-  （不在 core 里，也不改动 core 的静态资源）；
-- 本地化文案：`PlainSkinMessages` + `i18n/messages.properties` / `messages_en.properties`
-  （`plugin.plain-skin.*`、皮肤名与说明 `skin.plain.name` / `skin.plain.description`）；
-- 构建：`.\gradlew.bat :plugin:plain-skin:build`。
+提供独立的页面布局和样式，作为可安装皮肤使用。
 
 ## 功能
 
@@ -26,6 +18,7 @@ MediaWiki 侧没有对应扩展页，皮肤机制见官方手册 [Manual:Skins](
 
 描述文件里**没有**声明 `plugin.featureKey`：皮肤不是功能开关，装了即可选。
 
+
 ## 与 MediaWiki 的差异
 
 - MediaWiki 的皮肤是核心机制（`Manual:Skins`），这里做成插件，方便第三方皮肤照抄结构：
@@ -33,7 +26,4 @@ MediaWiki 侧没有对应扩展页，皮肤机制见官方手册 [Manual:Skins](
 - 皮肤名与说明走消息键（`skin.plain.name` / `skin.plain.description`），core 的内置皮肤
   （Vector 与不可禁用的 Fallback）不通过插件注册。
 
-## 相关文档
-
-- [皮肤与前端界面](/docs/development/skins)（皮肤机制、内置皮肤、插件皮肤）
-- [插件开发与运行](/docs/development/plugin-development)（插件清单、`SetupStep`、插件静态资源端点）
+[源码与开发说明](https://github.com/THOnlyWiki/WikiKernel/tree/master/plugin/plain-skin)

@@ -1,25 +1,14 @@
 ---
-title: "WikiSEO（WikiKernel 插件）"
-sidebar_label: "WikiSEO"
-sidebar_position: 25
-description: "移植自 MediaWiki 的 Extension:WikiSEO 2.7.0 （源码基线 REL143，原扩展路径 extensions/WikiSEO），用于给词条阅读页补充 SEO 元数据："
+title: "搜索与分享元数据"
+sidebar_label: "搜索与分享元数据"
+description: "为页面生成搜索描述、分享卡片及其他 HTML head 元数据。"
 ---
 
-<!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->
-移植自 MediaWiki 的 [Extension:WikiSEO](https://www.mediawiki.org/wiki/Extension:WikiSEO) **2.7.0**
-（源码基线 REL1_43，原扩展路径 `extensions/WikiSEO`），用于给词条阅读页补充 SEO 元数据：
+# 搜索与分享元数据
 
-* 双入口：`{{#seo:…}}` 解析器函数与 `<seo>…</seo>` 标签；
-* 参数写入 **页面属性**（WikiKernel 的 `wiki_page_property`，相当于 MediaWiki 的 `page_props`）；
-* 渲染词条阅读页时由 `HtmlHeadProvider` 输出 `<meta>` / `<link>` / `application/ld+json` 片段，并按需覆盖 `<title>`；
-* 生成器：`MetaTag`（总是启用）、`OpenGraph`、`Twitter`、`SchemaOrg`（默认启用）、`Citation`、`DublinCore`；
-* 自动描述：没有手工 `description` 时用页面正文现场生成（**本机化实现，替代原版依赖的 TextExtracts**）。
+为页面生成搜索描述、分享卡片及其他 HTML head 元数据。
 
-插件 id：`wiki-seo`；插件版本沿用原扩展版本号 `2.7.0`；Java 包名 `cc.thonly.wikikernel.plugin.wikiseo`。
-
----
-
-## 1. 安装与启用
+## 安装与启用
 
 1. `gradlew.bat :plugin:wiki-seo:jar`（或 `gradlew.bat installPlugins`）构建插件 jar，放到 core 的插件目录（默认 `run/plugins/` 或仓库根 `plugins/`）。
 2. 重启 WikiKernel，插件会被自动加载（`META-INF/services/…WikiPlugin` + `META-INF/wiki-plugin.properties`）。
@@ -41,7 +30,8 @@ wikikernel:
 
 ---
 
-## 2. 用法
+
+## 用法
 
 ### 2.1 解析器函数（推荐，可以塞变量 / 模板）
 
@@ -148,7 +138,8 @@ Citation 参数（与原版一致）：`citation_author`（多个用 `;` 分隔�
 
 ---
 
-## 3. 配置项（`wikikernel.plugins.settings.wiki-seo.*`）
+
+## 配置项（`wikikernel.plugins.settings.wiki-seo.*`）
 
 | 配置键 | 默认值 | 对应的 MediaWiki 变量 | 说明 |
 | --- | --- | --- | --- |
@@ -176,7 +167,8 @@ Citation 参数（与原版一致）：`citation_author`（多个用 `;` 分隔�
 
 ---
 
-## 4. Head 输出明细
+
+## Head 输出明细
 
 `SeoHeadProvider` 按「MetaTag → 配置里列出的生成器（按配置顺序）」输出；除 JSON-LD 外每项都是独立的一行 HTML 片段，
 所有属性值都做了转义（`&` → `&amp;`、`"` → `&quot;`、`<` → `&lt;`、`>` → `&gt;`、`'` → `&#39;`），
@@ -197,7 +189,8 @@ JSON-LD 内部还会把 `<`、`>`、`&` 转成 `\uXXXX`，避免正文内容破�
 
 ---
 
-## 5. 自动描述（本机化实现）
+
+## 自动描述（本机化实现）
 
 原版在**页面保存时**通过 TextExtracts API 取摘要写入 `description` page prop；WikiKernel 没有 TextExtracts，
 改为在 **Head 阶段**读取页面正文现场生成：
@@ -212,7 +205,8 @@ JSON-LD 内部还会把 `<`、`>`、`&` 转成 `\uXXXX`，避免正文内容破�
 
 ---
 
-## 6. 与 MediaWiki 原版（2.7.0）的差异
+
+## 与 MediaWiki 原版（2.7.0）的差异
 
 ### 6.1 未移植的功能
 
@@ -273,46 +267,4 @@ JSON-LD 内部还会把 `<`、`>`、`&` 转成 `\uXXXX`，避免正文内容破�
 
 ---
 
-## 7. 代码结构与测试
-
-```
-plugin/wiki-seo/
-├── build.gradle
-├── README.md
-└── src
-    ├── main/java/cc/thonly/wikikernel/plugin/wikiseo/
-    │   ├── WikiSeoPlugin.java            # 入口：@Autowired WikiPageStore + 注册扩展点
-    │   ├── WikiSeoConfig.java            # 插件配置（record + from(PluginConfig)）
-    │   ├── WikiSeoSetup.java             # 安装向导字段
-    │   ├── SeoParserFunction.java        # {{#seo:…}}
-    │   ├── SeoTag.java                   # <seo>…</seo>
-    │   ├── SeoMetadata.java              # 参数解析 / description 语义 / 实体解码 / 写入属性
-    │   ├── SeoValidator.java             # 合法参数集合（含生成器参数与 hreflang_ 前缀）
-    │   ├── SeoHeadProvider.java          # HtmlHeadProvider：head 片段 + <title>
-    │   ├── SeoHead.java                  # head 阶段上下文 + 片段拼装 / 转义
-    │   ├── SeoImage.java                 # 图片（URL + 宽高）
-    │   ├── SeoAutoDescription.java       # 自动描述（抽纯文本 + 截断）
-    │   ├── SeoJson.java                  # 极简 JSON 序列化（JSON-LD 用）
-    │   ├── SeoGenerator.java             # 生成器接口
-    │   ├── MetaTagGenerator.java         # description/keywords/robots/验证码/hreflang/canonical
-    │   ├── OpenGraphGenerator.java       # og:* / article:*
-    │   ├── TwitterGenerator.java         # twitter:*
-    │   ├── SchemaOrgGenerator.java       # application/ld+json
-    │   ├── CitationGenerator.java        # citation_*
-    │   └── DublinCoreGenerator.java      # DC.*
-    ├── main/resources/META-INF/…         # 插件清单与 SPI
-    └── test/java/cc/thonly/wikikernel/plugin/wikiseo/
-        ├── SeoFakes.java                 # 手写替身（HeadContext / WikiRenderContext / ParserCall / 页面存储）
-        ├── SeoMetadataTest.java          # 解析 / 校验 / description 语义 / 标签 / hreflang / 配置
-        ├── SeoHeadProviderTest.java      # <title>、robots、noindex、验证码、hreflang、图片、各生成器、转义
-        ├── SeoAutoDescriptionTest.java   # 纯文本抽取与截断
-        └── WikiSeoPluginTest.java        # 插件装配 / 生成器集合 / 安装向导
-```
-
-运行测试与打包：
-
-```
-gradlew.bat :plugin:wiki-seo:test :plugin:wiki-seo:jar --console=plain
-```
-
-测试全部用 JUnit 5 + 手写替身，不依赖 Spring 上下文（`WikiPageStore` / `PluginConfig` 等都用 fake 实现）。
+[源码与开发说明](https://github.com/THOnlyWiki/WikiKernel/tree/master/plugin/wiki-seo)

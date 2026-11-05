@@ -1,12 +1,14 @@
 ---
-title: "DynamicPageList4（WikiKernel 移植）"
-sidebar_label: "DynamicPageList4"
-sidebar_position: 11
-description: "对应 MediaWiki 的 DynamicPageList4 扩展，提供页面里按条件列出页面的解析器函数："
+title: "动态页面列表"
+sidebar_label: "动态页面列表"
+description: "使用 #dpl 解析器函数，按分类等条件生成页面列表。"
 ---
 
-<!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->
-对应 MediaWiki 的 **DynamicPageList4** 扩展，提供页面里按条件列出页面的解析器函数：
+# 动态页面列表
+
+使用 #dpl 解析器函数，按分类等条件生成页面列表。
+
+## 用法示例
 
 ```wikitext
 {{#dpl:
@@ -59,6 +61,7 @@ description: "对应 MediaWiki 的 DynamicPageList4 扩展，提供页面里按�
 - `{{#dplreplace:text|pattern|replacement}}`（支持 `/pattern/` 写法）
 - `{{#dplnum:text}}`（取第一个数字）
 
+
 ## 未包含
 
 以下 DPL 高级函数依赖 DPL 的章节转写 / 矩阵上下文，当前没有移植：
@@ -71,11 +74,4 @@ description: "对应 MediaWiki 的 DynamicPageList4 扩展，提供页面里按�
 主查询里的 `include` / `includepage` / `secseparators` 等「把页面内容转写进结果」的参数也暂未实现；
 当前输出是页面标题列表。若站点后续用到这些参数，可以在本插件的 `DplFunction` + `PageSearchStore` 上继续扩展。
 
-## 实现位置
-
-- 插件：`plugin/dynamic-page-list/`
-- 页面检索接口：`common/.../service/PageSearchStore.java`
-- core 实现：`core/.../service/impl/PageSearchStoreImpl.java`
-
-插件不直接访问 `wiki_page` / `wiki_page_category` 表；分类、命名空间、标题与排序都由 core 的
-`PageSearchStore` 统一处理，SQLite / MySQL / H2 行为一致。
+[源码与开发说明](https://github.com/THOnlyWiki/WikiKernel/tree/master/plugin/dynamic-page-list)

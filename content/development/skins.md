@@ -1,50 +1,11 @@
 ---
-title: 皮肤与前端界面
-sidebar_label: 皮肤
+title: "皮肤与前端"
+description: "皮肤与前端"
 ---
 
-# 皮肤与前端界面
+# 皮肤与前端
 
-皮肤机制与内置皮肤、页面自定义 CSS / JS 与代码页面（含 TypeScript 代码页面的服务端编译）、
-用户脚本引用（`mw.wikiImport`）、与 MediaWiki / OOUI 的样式对齐、插件皮肤，以及界面侧边栏 `WikiKernel:Sidebar`。
-
-其它文档：[README](https://github.com/THOnlyWiki/WikiKernel) ｜ [接口与兼容 API](/docs/api/reference) ｜ [配置与数据](/docs/administration/configuration-reference) ｜ [功能详述](/docs/guides/features) ｜ [Wikitext 与内容标记](/docs/guides/wikitext) ｜ [插件开发与运行](/docs/development/plugin-development)
-
-## 侧边栏（WikiKernel:Sidebar）
-
-侧边栏由页面 `WikiKernel:Sidebar` 控制（标题可在 `wikikernel.sidebar.page` 配置），语法类似 MediaWiki:Sidebar：
-
-```text
-* 导航
-** 首页
-** 特殊:全部页面|全部页面
-** 特殊:特殊页面|特殊页面
-* 工具
-** 特殊:链入页面?page=$title$|链入页面
-** 特殊:相关更改?page=$title$|相关更改
-** 特殊:上传文件|上传文件
-** 特殊:特殊页面|特殊页面
-** $title$?printable=yes|可打印版
-** $title$?oldid=|固定链接
-** $title$?action=info|页面信息
-```
-
-- `*` 开头 = 分组标题；`**` 开头 = 条目；写法 `目标|显示文字`（不写显示文字就用目标）；
-- 目标以 `http(s)://` 开头视为外链（新窗口打开），否则链接到 `/wiki/<目标>`；
-- **`$title$` 是当前页面完整标题的占位**（大小写不敏感；侧栏里也兼容 MediaWiki 魔术字写法
-  `{{FULLPAGENAME}}`（完整标题）与 `{{PAGENAME}}`（去掉命名空间的页面名））：
-  只替换 `*` 开头的侧栏定义行（普通说明行原样保留）；没有页面上下文（如错误页取不到标题）时，
-  含占位符的条目自动隐藏；MediaWiki 原版侧栏不支持这种按页替换，这是本 wiki 的扩展；
-  正文 wikitext 里的 `{{PAGENAME}}` / `{{FULLPAGENAME}}` / `{{NAMESPACE}}` / `{{!}}` 魔术字同样可用（MediaWiki 语义）；
-- 页面不存在或为空时使用内置默认侧边栏（同样带完整「工具」箱）；
-- 内容页渲染时，工具箱里的标准条目（链入页面 / 相关更改 / 上传文件 / 特殊页面 / 可打印版 / 固定链接 / 页面信息）
-  会按**链接目标**识别并替换为当前页面版本（`?page=` / `?printable=yes` / `?oldid=<当前版本>`）——
-  与侧栏页面内容的语言无关（中文侧栏 + 英文界面也只有一组工具）；
-  识别标记是目标里的 `?page=` / `?printable=yes` / `?oldid=` / `?action=info` 或 `特殊:上传文件` 等标准工具页；
-- 特殊页同样生成这套工具条目：链入页面 / 相关更改以该特殊页为查询目标，
-  可打印版打开该特殊页的打印版、固定链接指向该特殊页本身、页面信息显示该特殊页的信息（`?action=info`）；
-  用户自定义（非托管）条目始终原样保留；
-- `SidebarModelAdvice`（`@ControllerAdvice`）会把 `sidebar` 模型自动加给所有 MVC 模板，插件页面模板同样可用。
+皮肤控制布局、样式和前端资源。只修改公告、侧边栏或单页样式时，先看[界面与系统页面](/docs/administration/interface)。
 
 ## 皮肤系统与搜索
 

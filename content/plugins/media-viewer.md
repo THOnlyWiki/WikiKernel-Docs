@@ -1,11 +1,16 @@
 ---
-title: "media-viewer（MediaWiki TimedMediaHandler + MediaViewer 移植）"
-sidebar_label: "media-viewer"
-sidebar_position: 41
-description: "音视频播放器与图片放大查看："
+title: "音视频预览"
+sidebar_label: "音视频预览"
+description: "在文件页和正文中为支持的音视频文件显示播放器。"
 ---
 
-<!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->
+# 音视频预览
+
+在文件页和正文中为支持的音视频文件显示播放器。
+
+
+## 使用
+
 音视频播放器与图片放大查看：
 
 | 能力 | 说明 |
@@ -20,14 +25,6 @@ description: "音视频播放器与图片放大查看："
 - 资源：`/plugins/media-viewer/media-viewer.js`（播放器）、`image-viewer.js`（图片查看器）、
   `media-viewer.css`（**从 core 的 base.css 迁出**的播放器与查看器样式）。
 
-## 扩展点
-
-| 扩展点 | 用途 |
-| --- | --- |
-| `FileEmbedRenderer` | 词条嵌入与文件页预览的播放器 HTML（按 `order()` 询问，返回 `null` = 交给 core） |
-| `HtmlHeadProvider`（`siteWide()`） | 注入样式、`WIKI_CONFIG.mediaViewer = true`、按钮文案与两个脚本（所有页面都要） |
-| `MessageBundle` | `media.*` / `imageViewer.*` 文案（键与迁移前 core 一致，core 里已删除） |
-
 ## 与 MediaWiki 原版的差异
 
 - 没有转码（MediaWiki 用 TimedMediaHandler 的 OGV/WebM 转码队列）：只播放浏览器原生支持的格式；
@@ -41,3 +38,5 @@ description: "音视频播放器与图片放大查看："
 > core 自动在「特殊:权限配置 → 站点设置 → 插件设置」与 `/init` 的插件 tab 里渲染 / 保存；
 > 插件用 `common.service.SiteConfig` 读同一个键——core 里没有本功能的开关代码，
 > 插件未加载时开关也不出现。
+
+[源码与开发说明](https://github.com/THOnlyWiki/WikiKernel/tree/master/plugin/media-viewer)

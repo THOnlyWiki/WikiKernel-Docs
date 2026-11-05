@@ -1,23 +1,18 @@
 ---
-title: "反向代理（Reverse proxy）"
+title: "反向代理"
 sidebar_label: "反向代理"
-sidebar_position: 60
-description: "管理员动态配置 URL 前缀，把指定站点代理到 Wiki 的固定命名空间："
+description: "在配置的站内路径下代理指定上游服务。"
 ---
 
-<!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->
-管理员动态配置 URL 前缀，把指定站点代理到 Wiki 的固定命名空间：
+# 反向代理
+
+在配置的站内路径下代理指定上游服务。
+
+## 用法示例
 
 ```text
 /proxy_google_doc/...  →  https://docs.google.com/...
 ```
-
-- 管理入口：`特殊:反向代理` / `Special:ReverseProxy`
-- 管理权限：Wiki 的 `protect` 动作（默认管理员 / 行政员，可在 `特殊:权限配置` 调整）
-- 路由 URL 固定为 `/proxy_<路由名>/`，例如路由名 `google_doc` 对应 `/proxy_google_doc/`
-- 路由配置保存在站点设置 `reverse-proxy.routes`（JSON），不需要额外的数据库表
-- 总开关与出站代理：`特殊:权限配置 → 站点设置 → 反向代理`
-- 裸根部署时，core 的 `WikiUrlRewriteFilter` 会把 `/proxy_*` 视为保留命名空间，不再当成 Wiki 页面标题；需要同名 Wiki 页面时使用 `/wiki/proxy_...` 旧路径访问
 
 ## 设计取舍（安全优先）
 
@@ -28,6 +23,7 @@ description: "管理员动态配置 URL 前缀，把指定站点代理到 Wiki �
 5. **CSP sandbox**：默认给 HTML 响应加 `sandbox`（不包含 `allow-same-origin`），让上游脚本以不透明源执行；必要时可以按路由关闭以换取兼容性。
 6. **重定向**：不自动跟随上游 3xx。同源 `Location` 会改写回 `/proxy_<路由名>/...`，外部 Location 保持原样，避免代理被利用做 SSRF 跳转。
 7. **HTML / CSS 改写**：可选，只改写与上游同源的 URL。适合普通静态站点；复杂 SPA / Google Docs 可能依赖绝对 API、跨域、登录 Cookie 或 WebSocket，无法保证完整可用。
+
 
 ## 使用
 
@@ -54,6 +50,7 @@ socks5h://127.0.0.1:10808
 /proxy_google_doc/document/d/<document-id>/edit
 ```
 
+
 ## 已知限制
 
 - 不代理 WebSocket（Google Docs 的实时协作、部分在线编辑器需要 WebSocket）。
@@ -64,12 +61,4 @@ socks5h://127.0.0.1:10808
 - 单实例部署；多实例部署时每个实例各自执行代理，配置从共享站点设置读取。
 - 插件不自带请求限流；公开路由建议配合站点级限流或把访问级别设为“登录用户 / 管理员”，避免被当作免费带宽出口。
 
-## 构建 / 部署
-
-```text
-gradlew.bat :plugin:reverse-proxy:jar
-copy plugin\reverse-proxy\build\libs\reverse-proxy-*.jar plugins\
-```
-
-然后重启 WikiKernel（`run.bat`），或使用插件动态装卸：
-`POST /api/plugins/reload`（仅管理员）。
+[源码与开发说明](https://github.com/THOnlyWiki/WikiKernel/tree/master/plugin/reverse-proxy)

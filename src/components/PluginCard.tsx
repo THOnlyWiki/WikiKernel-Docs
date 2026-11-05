@@ -22,9 +22,7 @@ export default function PluginCard({plugin}: {plugin: Plugin}) {
         <span className={styles.category}>{plugin.categoryLabel}</span>
         {plugin.status === 'demo' ? (
           <span className={styles.demo}>演示</span>
-        ) : (
-          <span className={styles.stable}>stable</span>
-        )}
+        ) : null}
       </div>
       <h3 className={styles.name}>{plugin.name}</h3>
       <p className={styles.description}>{plugin.description || plugin.title}</p>

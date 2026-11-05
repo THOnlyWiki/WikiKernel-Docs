@@ -1,15 +1,15 @@
 ---
-title: 配置速查
-sidebar_label: 配置速查
+title: 配置文件
+sidebar_label: 配置文件
 sidebar_position: 3
 description: LocalSettings.yaml、数据库、端口、时区与功能开关的最小配置示例。
 ---
 
-# 配置速查
+# 配置文件
 
 WikiKernel 的配置方式类似 MediaWiki 的 `LocalSettings.php`：主程序只带默认值，本地差异写在启动目录的 `LocalSettings.yaml` 中。
 
-完整键名、默认值与中文说明见 [配置与部署参考](/docs/administration/configuration-reference)。
+配置项的查找入口见 [配置参考](/docs/administration/configuration-reference)。
 
 ## 配置文件在哪里
 
@@ -92,7 +92,7 @@ wikikernel:
     zone: Asia/Shanghai
 ```
 
-这会影响评论时间等服务端 `LocalDateTime.now()` 写入的时间。用户个人时区仍然优先用于页面展示。
+这会改变服务器写入时间的时区。已有站点不要只为修正显示时间而改变存储时区；个人显示时间请在参数设置中选择时区。评论等已接入时间显示服务的功能会按用户偏好换算，旧记录无需改写。
 
 ## 功能开关
 

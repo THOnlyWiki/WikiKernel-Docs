@@ -1,22 +1,12 @@
 ---
-title: "abuse-filter（MediaWiki AbuseFilter 扩展移植）"
-sidebar_label: "abuse-filter"
-sidebar_position: 20
-description: "滥用过滤器：用条件表达式匹配编辑 / 移动 / 注册 / 上传等动作的变量（页面标题、正文、用户、IP、 站点统计…），命中后执行「禁止（disallow）」「警告（warn）」「标记（tag）」「封禁（block）」 「移除自动确认（blockautopromote）」等动作；命中写滥用日志（含变量快照）， 管理员在 特殊:滥用过滤器 里维护过滤器（含历史…"
+title: "滥用过滤器"
+sidebar_label: "滥用过滤器"
+description: "按规则拦截编辑、注册和其他操作，并记录命中日志。"
 ---
 
-<!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->
-滥用过滤器：用**条件表达式**匹配编辑 / 移动 / 注册 / 上传等动作的变量（页面标题、正文、用户、IP、
-站点统计…），命中后执行「禁止（disallow）」「警告（warn）」「标记（tag）」「封禁（block）」
-「移除自动确认（blockautopromote）」等动作；命中写**滥用日志**（含变量快照），
-管理员在 `特殊:滥用过滤器` 里维护过滤器（含历史恢复与测试），在 `特殊:滥用日志` 里查看命中记录。
+# 滥用过滤器
 
-| 入口 | 说明 |
-| --- | --- |
-| `特殊:滥用过滤器`（`Special:AbuseFilter`） | 过滤器列表 / 新建 / 编辑（CodeMirror 条件编辑器）/ 历史与恢复 / **测试**（用表达式匹配最近编辑）；只有管理员 / 行政员 |
-| `特殊:滥用日志`（`Special:AbuseLog`） | 命中日志：时间 / 过滤器 / 用户 / 页面 / 结果；详情含变量快照；隐藏条目只对管理员 / 行政员可见 |
-| `/api/abuse-filter/*` | 保存 / 恢复 / 测试 / 隐藏日志的接口（插件自己的 `@RestController`） |
-| `/plugins/abuse-filter/abuse-filter.js`、`abuse-filter.css` | 管理界面脚本与样式（站点级注入，由 `HtmlHeadProvider` 提供） |
+按规则拦截编辑、注册和其他操作，并记录命中日志。
 
 ## 拦截入口（全部走平台钩子）
 
@@ -28,19 +18,6 @@ description: "滥用过滤器：用条件表达式匹配编辑 / 移动 / 注册
 | 封禁 | `ActionGuard`（`action=block`） | 封禁接口 |
 | 注册账号 | `RegistrationGuard` | 创建账号前评估（`action=createaccount`） |
 
-## 开关与数据
-
-- **开关**：`features.abuse-filter`（**默认关闭**；`/init`、`特殊:权限配置 → 站点设置`、`LocalSettings.yaml` 都可改）；
-  开启时插件用 `common.service.UserWriter` 确保存在系统账号「滥用过滤器」（「机器人」组，用于过滤器封禁）；
-- **数据**：`wiki_abuse_filter`（过滤器）/ `wiki_abuse_filter_revision`（修订）/ `wiki_abuse_log`（命中日志）
-  三张表**属于插件自己**：实体在 `plugin/abuse-filter/.../data/`（`@TableName` + common 的 `@DbColumn`），
-  由插件在 `WikiPlugin.schemaEntities()` 里声明，core 在 `onStart` 前按与 core 相同的 Auto-DDL 规则建表 / 补列
-  （SQLite / MySQL / H2，只增不减；已有库的表结构完全兼容）；
-  数据访问走 `common.service.PluginDatabase`（JDBC 桥，见 `service/AbuseFilterStoreJdbc`），
-  「测试过滤器」的最近编辑 / 编辑者概况来自通用的 `common.service.RecentChangesStore`——**common 里不再有
-  滥用过滤器专属的实体或桥接口**；
-- **插件未加载时**：不评估任何过滤器、不写滥用日志（编辑 / 移动 / 注册照常），两个特殊页与
-  `/api/abuse-filter/*` 都不存在；core 只保留站点设置开关与文档。
 
 ## 与 MediaWiki AbuseFilter 的差异
 
@@ -59,3 +36,5 @@ description: "滥用过滤器：用条件表达式匹配编辑 / 移动 / 注册
 > core 自动在「特殊:权限配置 → 站点设置 → 插件设置」与 `/init` 的插件 tab 里渲染 / 保存；
 > 插件用 `common.service.SiteConfig` 读同一个键——core 里没有本功能的开关代码，
 > 插件未加载时开关也不出现。
+
+[源码与开发说明](https://github.com/THOnlyWiki/WikiKernel/tree/master/plugin/abuse-filter)

@@ -1,18 +1,15 @@
 ---
-title: "external-auth-github"
-sidebar_label: "external-auth-github"
-sidebar_position: 32
-description: "GitHub OAuth App 第三方登录 / 注册 provider 插件。"
+title: "GitHub 登录"
+sidebar_label: "GitHub 登录"
+description: "使用 GitHub OAuth 登录或绑定本站账号。"
 ---
 
-<!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->
-GitHub OAuth App 第三方登录 / 注册 provider 插件。
+# GitHub 登录
 
-- 扩展点：`cc.thonly.wikikernel.common.externalauth.ExternalAuthProvider`
-- 站点设置键：`auth.github.enabled`、`auth.github.client-id`、`auth.github.client-secret`
-- 回调地址：`/auth/github/callback`
-- 首次登录自动注册由 core 的 `auth.external.auto-register` 控制，并受注册开关 / 封禁 / 注册钩子约束。
-- 首次注册成功后，如果已加载 `social-profile` 插件且 `features.social-profile` 开启，会自动下载 GitHub
-  `avatar_url` 作为本地头像；未加载 SocialProfile、功能关闭或下载失败时静默跳过，不影响注册与登录。
+使用 GitHub OAuth 登录或绑定本站账号。
 
-管理员在 `特殊:权限配置 → 第三方登录` 配置；用户可在 `特殊:参数设置 → 第三方授权` 绑定 / 解绑。
+在 GitHub 创建 OAuth 应用，将回调地址填写为本站公网地址加 `/auth/github/callback`。在站点设置中填写 Client ID、Client Secret 并启用 GitHub 登录。
+
+反向代理后的协议和域名必须与回调配置一致。账号绑定、自动注册和完整配置见[第三方登录](/docs/administration/third-party-login)。
+
+[源码与开发说明](https://github.com/THOnlyWiki/WikiKernel/tree/master/plugin/external-auth-github)

@@ -1,104 +1,28 @@
 ---
-title: API 概览
-sidebar_label: API 概览
-sidebar_position: 1
-description: WikiKernel 的 MediaWiki 兼容 Action API、REST API、认证流程与示例。
+title: "API 使用"
+description: "查询页面、登录和使用 token 编辑页面。"
 ---
 
-# API 概览
+# API 使用
 
-WikiKernel 提供两套接口：
+WikiKernel 提供 `/api.php` 兼容接口，以及内核和插件自己的 `/api/` 接口。机器人可从兼容接口开始；具体支持的动作见 [API 参考](/docs/api/reference)。
 
-1. **MediaWiki Action API 兼容层**：`/api.php?action=...`，适合机器人、pywikibot 风格脚本和旧工具。
-2. **站点自己的 REST API**：`/api/*`，由 core 和插件分别提供，例如评论、私信、头像、审核、AI 代理。
-
-本页讲最小可用流程；完整动作与参数见 [API 参考](/docs/api/reference)。
-
-## MediaWiki 兼容入口
-
-| 入口 | 用途 |
-| --- | --- |
-| `/api.php` | Action API，返回 JSON / JSONFM / XML |
-| `/index.php?title=...` | 兼容旧链接，重定向到 `/wiki/...` |
-| `/load.php?modules=...` | ResourceLoader 风格的最小兼容层 |
-| `/js/mediawiki.js` | `mw`、`mw.loader`、`mw.Api` 等前端兼容层 |
-
-通用参数：
-
-```text
-format=json
-formatversion=2
-callback=name
-```
-
-错误格式与 MediaWiki 对齐：
-
-```json
-{
-  "error": {
-    "code": "unknown_action",
-    "info": "..."
-  }
-}
-```
-
-## 查询页面
+## 读取页面
 
 ```bash
-curl 'http://localhost:18080/api.php?action=query&prop=revisions&rvprop=content&titles=首页&formatversion=2'
+curl --get 'http://localhost:18080/api.php' \
+  --data-urlencode 'action=query' \
+  --data-urlencode 'prop=revisions' \
+  --data-urlencode 'rvprop=content' \
+  --data-urlencode 'titles=首页' \
+  --data-urlencode 'formatversion=2'
 ```
 
-常用查询：
+读取内容受页面权限约束。常用查询包括 `meta=siteinfo|userinfo|tokens`、`prop=info|revisions|categories|imageinfo` 和 `list=allpages|search|recentchanges`。
 
-- `meta=siteinfo|userinfo|tokens`
-- `prop=info|revisions|categories|imageinfo`
-- `list=allpages|search|recentchanges|users|usercontribs|categorymembers|logevents`
-- `redirects=1` 跟随重定向
+## 登录和编辑
 
-## 登录与 token
-
-写操作需要 CSRF token。登录本身需要一个 login token：
-
-```bash
-# 1. 取 login token，并保存 cookie
-curl -c cookies.txt \
-  'http://localhost:18080/api.php?action=query&meta=tokens&type=login&format=json'
-
-# 2. 登录（把 lgtoken 替换成上一步的值）
-curl -b cookies.txt -c cookies.txt \
-  --data-urlencode 'action=login' \
-  --data-urlencode 'lgname=Bot' \
-  --data-urlencode "lgpassword=$WIKI_PASSWORD" \
-  --data-urlencode 'lgtoken=...' \
-  'http://localhost:18080/api.php'
-
-# 3. 取 CSRF token
-curl -b cookies.txt \
-  'http://localhost:18080/api.php?action=query&meta=tokens&type=csrf&format=json'
-```
-
-## 编辑页面
-
-```bash
-curl -b cookies.txt \
-  --data-urlencode 'action=edit' \
-  --data-urlencode 'title=沙盒' \
-  --data-urlencode 'text=来自 API 的内容' \
-  --data-urlencode 'summary=API 测试' \
-  --data-urlencode 'token=...' \
-  'http://localhost:18080/api.php'
-```
-
-支持的常用编辑语义：
-
-- `appendtext`：追加正文
-- `section=N`：编辑指定段落
-- `section=new` + `sectiontitle=`：追加新段落
-- `baserevid`：编辑冲突检测
-- `nocreate` / `createonly`
-- `bot=1`：机器人组编辑
-
-## 一个完整的 curl 示例
+先取 login token，再携带同一份 Cookie 登录；登录后取得 CSRF token，用于写操作。下面的示例需要 curl 和 jq，将 `Bot` 替换为本站账号，并在环境变量 `WIKI_PASSWORD` 中提供密码。
 
 ```bash
 BASE='http://localhost:18080'
@@ -127,47 +51,16 @@ curl -s -b cookies.txt \
   "$BASE/api.php" | jq .
 ```
 
-## 原始页面与导出
+保存前检查响应。出现 `error` 时读取 `code` 和 `info`，不要仅依据 HTTP 状态码判断成功。编辑冲突检测可提交 `baserevid`；追加正文和分段编辑分别使用 `appendtext`、`section` 等参数。
 
-- `GET /index.php?title=页面&action=raw`：返回 wikitext。
-- `GET /index.php?title=页面&action=raw&ctype=text/javascript`：指定 Content-Type。
-- `特殊:导出页面` / `Special:Export`：导出页面、完整历史或引用模板。
-- `特殊:导入页面` / `Special:Import`：导入 XML。
+## 原始内容和前端脚本
 
-## 前端 `mw` 兼容层
+`/index.php?title=页面&action=raw` 返回页面源内容。页面级 JavaScript 可指定 `ctype=text/javascript`。这些入口同样受页面访问权限限制。
 
-页面默认加载 `/js/mediawiki.js`。在页面脚本、Widgets 或 Gadgets 中可以直接使用：
+浏览器页面中的 `mw.Api`、`mw.loader` 等兼容接口见 [API 参考](/docs/api/reference)。兼容层不包含 MediaWiki 所有模块，接入旧脚本后应检查浏览器控制台。
 
-```js
-mw.loader.using(['mediawiki.api'], function () {
-  new mw.Api().get({
-    action: 'query',
-    meta: 'siteinfo',
-    formatversion: '2'
-  }).done(function (data) {
-    console.log(data.query.general.sitename);
-  });
-});
-```
+## 插件接口
 
-可用的兼容模块与限制见 [完整 API 参考](/docs/api/reference)。
+评论、头像、通知和 AI 等接口由相应插件注册；没有安装插件时接口不存在。参数和权限以各[插件说明](/plugins)为准。不要把 `/api.php` 的 token 流程直接套用到另一套接口。
 
-## REST API
-
-站点自己的接口通常位于 `/api/` 下，例如：
-
-```text
-POST /api/comments
-POST /api/comments/delete
-POST /api/messages/send
-POST /api/user/avatar
-POST /api/ai-agent/...
-```
-
-它们使用站点的登录会话与 CSRF 校验，具体参数由 core 或插件文档定义。
-
-## 下一步
-
-- [完整 API 参考](/docs/api/reference)
-- [插件开发](/docs/development/plugin-development)
-- [第三方登录](/docs/administration/third-party-login)
+JSONP 的 `callback` 仅适用于允许的匿名公开读取，不应携带登录态或用于获取 token。

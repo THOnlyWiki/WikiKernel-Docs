@@ -1,13 +1,12 @@
 ---
-title: "Math（插件）"
-sidebar_label: "Math"
-sidebar_position: 17
-description: "Math 扩展的 WikiKernel 移植（对应 MediaWiki 的 Math 的客户端渲染模式）， 从 core 内置功能拆出为独立插件（plugin/math）。"
+title: "数学公式"
+sidebar_label: "数学公式"
+description: "使用 math 标签编写并显示数学公式。"
 ---
 
-<!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->
-Math 扩展的 WikiKernel 移植（对应 MediaWiki 的 [Math](https://www.mediawiki.org/wiki/Extension:Math) 的客户端渲染模式），
-从 core 内置功能拆出为独立插件（`plugin/math`）。
+# 数学公式
+
+使用 math 标签编写并显示数学公式。
 
 ## 功能
 
@@ -17,6 +16,7 @@ Math 扩展的 WikiKernel 移植（对应 MediaWiki 的 [Math](https://www.media
   **KaTeX**（`/vendor/katex/…`，随 core 分发）渲染，失败时显示 TeX 源码（`mw-math-fallback`）；
 - 功能开启时由 `HtmlHeadProvider` **站点级**注入开关与脚本（所有页面，含编辑预览；
   KaTeX 运行时仍然只在页面真的出现公式时才下载）。
+
 
 ## 兼容性
 
@@ -28,18 +28,4 @@ Math 扩展的 WikiKernel 移植（对应 MediaWiki 的 [Math](https://www.media
   （必须在 core 初始化 `window.WIKI_CONFIG` 之后写入，否则会被页头重置覆盖、
   脚本拿不到开关就不渲染——公式只剩 TeX 源码回退）。
 
-## 与迁移前的差异
-
-- core 不再内置 `<math>` / `<chem>` 解析：卸载 / 禁用本插件时标签按原文显示（不再生成占位）；
-- 前端脚本 URL 从 `/js/math.js` 变为 `/plugins/math/math.js`；KaTeX 运行时仍从 core 的 `/vendor/katex/…` 加载；
-- 可视化编辑器仍把 `<math>` / `<chem>` 识别为整块占位（core 的 tokenizer 保留这两个标签）。
-
-## 测试
-
-`MathTagTest` 覆盖行内 / 块级 / chem 占位、空白压缩、属性转义、空公式错误与开关关闭行为。
-
-> **功能开关**：`features.math`（默认值见插件描述文件）。开关由本插件在自己的
-> `META-INF/wiki-plugin.properties` 里声明（`plugin.featureKey` / `plugin.featureDefault`），
-> core 自动在「特殊:权限配置 → 站点设置 → 插件设置」与 `/init` 的插件 tab 里渲染 / 保存；
-> 插件用 `common.service.SiteConfig` 读同一个键——core 里没有本功能的开关代码，
-> 插件未加载时开关也不出现。
+[源码与开发说明](https://github.com/THOnlyWiki/WikiKernel/tree/master/plugin/math)

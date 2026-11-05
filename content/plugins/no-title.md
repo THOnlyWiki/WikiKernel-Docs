@@ -1,18 +1,12 @@
 ---
-title: "no-title（MediaWiki NoTitle 扩展移植）"
-sidebar_label: "no-title"
-sidebar_position: 18
-description: "在页面里写 NOTITLE（别名 无标题）即可隐藏页面大标题 —— 对应 MediaWiki 的 NoTitle 扩展。"
+title: "隐藏页面标题"
+sidebar_label: "隐藏页面标题"
+description: "使用页面行为开关隐藏正文上方的标题。"
 ---
 
-<!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->
-在页面里写 `__NOTITLE__`（别名 `__无标题__`）即可隐藏页面大标题 —— 对应 MediaWiki 的
-[NoTitle](https://www.mediawiki.org/wiki/Extension:NoTitle) 扩展。
+# 隐藏页面标题
 
-- 插件 id：`no-title`；模块：`:plugin:no-title`；入口类 `NoTitlePlugin`；
-- 本地化文案：`NoTitleMessages` + `i18n/messages.properties` / `messages_en.properties`
-  （`plugin.no-title.name` / `plugin.no-title.description`）；
-- 构建：`.\gradlew.bat :plugin:no-title:build`。
+使用页面行为开关隐藏正文上方的标题。
 
 ## 功能
 
@@ -23,17 +17,16 @@ description: "在页面里写 NOTITLE（别名 无标题）即可隐藏页面大
 
 `__NOTITLE__` / `__无标题__` 是**页面语法**，不是界面文案，因此只在 Java 里定义、不放进 `messages*.properties`。
 
+
 ## 兼容性
 
 - 描述文件 `META-INF/wiki-plugin.properties` 里**没有**声明 `plugin.featureKey`，所以本插件**没有站点级功能开关**：
   加载即生效（不需要 `features.*` 键，站点设置里也不会有它的复选框）；
 - 卸载 / 未加载插件时 `__NOTITLE__` 不被识别，页面按普通文本处理（与迁移前未启用该功能时一致）。
 
+
 ## 与 MediaWiki 的差异
 
 - MediaWiki 版用 CSS 隐藏 `h1.firstHeading`；WikiKernel 里行为开关写页面属性 `notitle`，由皮肤布局隐藏标题（效果一致）。
 
-## 相关文档
-
-- [Wikitext 与内容标记](/docs/guides/wikitext)（行为开关、解析器函数）
-- [插件开发与运行](/docs/development/plugin-development)（插件清单、`BehaviorSwitch` 等扩展点）
+[源码与开发说明](https://github.com/THOnlyWiki/WikiKernel/tree/master/plugin/no-title)

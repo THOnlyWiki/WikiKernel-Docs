@@ -1,13 +1,12 @@
 ---
-title: "Vue 组件（插件 `vue-components`）"
+title: "Vue 组件"
 sidebar_label: "Vue 组件"
-sidebar_position: 23
-description: "Vue 3 单文件组件 = wiki 页面（.vue），同名解析标签直接嵌进正文。"
+description: "在 Wiki 页面中编写和调用 Vue 单文件组件。"
 ---
 
-<!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->
-Vue 3 单文件组件 = **wiki 页面**（`*.vue`），同名解析标签直接嵌进正文。
-浏览器端编译（本地打包的 `vue.esm-browser.prod.js`，不依赖 CDN / 构建链）。
+# Vue 组件
+
+在 Wiki 页面中编写和调用 Vue 单文件组件。
 
 ## 写一个组件
 
@@ -37,6 +36,7 @@ export default {
 </style>
 ```
 
+
 ## 在页面里用
 
 ```wikitext
@@ -53,6 +53,7 @@ export default {
   - 普通属性按字符串传（值会先按上下文展开，支持 `{{PAGENAME}}`、`[[链接]]` 等）；
   - `:` 前缀的按 **严格 JSON** 解析：`:count="3"`（数字）、`:items='["甲","乙"]'`（数组，HTML 属性用单引号、JSON 用双引号）、`:open="true"`；写不成 JSON 时按字符串处理并在控制台提示（**不做 JS 求值**：页面任何人都能编辑，禁止借属性执行代码）；
 - 组件页面本身是**代码页**（HTML 高亮编辑、`?action=raw` 取源码）。
+
 
 ## 嵌套与写法约定（v1）
 
@@ -76,6 +77,7 @@ export default {
   从 `'vue'` 导入会自动指向插件自带的 Vue ESM 文件；
 - 组件脚本由**界面管理员**维护，等价于交互式脚本权限。
 
+
 ## 权限与开关
 
 - `*.vue` 与 `.js` / `.css` 一样属于**界面页**：默认只有 **界面管理员** 能编辑 / 创建 / 移动；
@@ -83,15 +85,4 @@ export default {
 - 功能开关 `features.vue-components`（默认开）：安装向导 `/init` 与「特殊:权限配置 → 插件设置」里都能改；
 - 只有**用到组件**的页面才注入加载器（页面属性 `vue-components-used`）。
 
-## 实现结构
-
-| 文件 | 作用 |
-| --- | --- |
-| `hook/VueComponentTag.java` | 解析标签：一个实例承载所有组件名；属性 → props；插槽内嵌套组件递归转换 |
-| `service/ComponentRegistry.java` | 组件注册表：`组件:` 命名空间前缀查询 + 全站 `*.vue` 扫描（缓存 15s，保存即失效） |
-| `hook/VueHeadProvider.java` | 页面级注入：用到组件才加载 `vue-components.js` / `.css` |
-| `hook/VueEditGuard.java`（内部类） | 页面保存后让注册表缓存失效（新建组件立即可用） |
-| `static/plugins/vue-components/vue-components.js` | 浏览器端加载器：拉源码、拆 SFC、编译模板、注入样式、递归挂载 |
-| `static/plugins/vue-components/vue.esm-browser.prod.js` | 本地打包的 Vue 3.5（含运行时编译器） |
-
-组件不存在 / 加载失败会在原位显示一行 `wiki-error`，并在浏览器控制台打日志。
+[源码与开发说明](https://github.com/THOnlyWiki/WikiKernel/tree/master/plugin/vue-components)

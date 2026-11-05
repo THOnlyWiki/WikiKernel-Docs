@@ -1,56 +1,11 @@
 ---
-title: API 参考
-sidebar_label: 完整 API 参考
+title: "API 参考"
+description: "API 参考"
 ---
 
-# 接口与兼容 API
+# API 参考
 
-WikiKernel 对外的读写接口：MediaWiki 风格的 `api.php`、`mw` / `mw.loader` 前端兼容层、跨 Wiki（Interwiki）链接表、
-页面导出 / 导入，以及链接悬停预览（Popups / Page Previews）。示例中的地址默认站点跑在 `http://localhost:18080`。
-
-其它文档：[README](https://github.com/THOnlyWiki/WikiKernel) ｜ [配置与数据](/docs/administration/configuration-reference) ｜ [功能详述](/docs/guides/features) ｜ [皮肤与前端界面](/docs/development/skins) ｜ [Wikitext 与内容标记](/docs/guides/wikitext) ｜ [插件开发与运行](/docs/development/plugin-development)
-
-## 跨 Wiki（Interwiki）
-
-仿 MediaWiki 的 [Interwiki](https://www.mediawiki.org/wiki/Manual:Interwiki) 功能：用**前缀**把
-`[[前缀:页面]]` 指向另一个 wiki，或在多语言站点之间建立**跨语言链接**。
-
-- **三种前缀语义**（在 `特殊:跨Wiki` 里维护，表 `wiki_interwiki`）：
-
-  | 前缀类型 | 写法 | 效果 |
-  | --- | --- | --- |
-  | 普通前缀 | `[[w:示例页面]]`、`[[commons:File:X.svg]]` | 渲染成外部链接（`class="external mw-interwiki"`，新窗口打开），显示名默认是「前缀:页面」，可用 `[[w:页面\|显示名]]` 覆盖 |
-  | 语言前缀（填了语言码） | `[[en:Interwiki demo]]` | **跨语言链接**：从正文剥离，收集到侧栏「语言」区块（显示语言名，如「英语」）；同一语言只保留第一次出现 |
-  | 本地前缀（勾选「本地前缀」） | `[[专题:某某]]` | 生成站内链接 `/wiki/专题:某某`（照常判断红链） |
-
-- **前导冒号**（仿 MediaWiki 的「强制链接」）：`[[:en:Page]]` 不当作跨语言链接，
-  `[[:分类:X]]` 只显示链接而不归类；`[[:w:Page]]` 同样渲染成跨 Wiki 外链；
-- **URL 模板**：`$1` 会替换成页面名，编码规则**对齐 MediaWiki 的 `wfUrlencode`**
-  （空格 → `_`，保留 `: / ' , $ @`），所以 `[[commons:File:Example.svg]]` 得到
-  `https://commons.wikimedia.org/wiki/File:Example.svg`；模板里没有 `$1` 时页面名追加到末尾；
-- **本地命名空间优先**：`[[帮助:X]]`、`[[分类:X]]` 这类真实命名空间仍按站内处理，
-  跨 Wiki 前缀只接管不冲突的前缀（所以前缀别取成已有命名空间名）；
-- **默认前缀表**（`InterwikiSeeder`，只在**表为空**时写入，之后不会被启动流程覆盖）：
-  `wikipedia` / `w`、`wiktionary` / `wikt`、`wikibooks`、`wikinews`、`wikiquote`、`wikisource`、
-  `wikiversity`、`wikispecies`、`commons`、`meta`、`mw`、`wikidata` / `d`，
-  以及语言前缀 `zh` / `en` / `ja` / `ko` / `de` / `fr` / `es` / `ru` / `it` / `pt` / `ar` / `vi`
-  （默认指向对应语言的维基百科——**自建多语言 wiki 时请改成自己的地址**）；
-- **`特殊:跨Wiki`**（`Special:Interwiki`）：前缀 / URL 模板 / 语言 / 标志（本地、可嵌入）列表，
-  可新增 / 编辑（`?edit=编号`）/ 删除，并支持**文本导出 / 导入**
-  （每行：`前缀 URL [本地 0/1] [可嵌入 0/1] [语言码]`，`#` 开头是注释）；
-  表格所有人都能看，增删改需要**管理员 / 行政员**（API：`POST /api/interwiki/save|delete|import`）；
-- **未实现**：`可嵌入（iw_trans）`只记录标志，尚不支持 `{{前缀:页面}}` 的**远端模板嵌入**
-  （MediaWiki 需要远端 wiki 的 API，本地实现会引入外网依赖与缓存问题）；
-- 演示页 **`跨Wiki演示页`**；回归测试 `InterwikiTest`。
-
-```text
-[[w:示例页面]]              →  https://zh.wikipedia.org/wiki/示例页面
-[[wikt:word|词典]]          →  https://zh.wiktionary.org/wiki/word（显示「词典」）
-[[commons:File:X.svg]]      →  https://commons.wikimedia.org/wiki/File:X.svg
-[[en:Interwiki demo]]       →  正文不显示；侧栏「语言」出现「英语 → en 版页面」
-[[:en:Interwiki demo]]      →  正文里显示成链接（强制链接）
-[[专题:某某]]                →  /wiki/专题:某某（本地前缀，站内链接）
-```
+本页列出兼容接口及参数。登录和编辑示例见 [API 使用](/docs/api/overview)。
 
 ## 页面导出与导入（仿 MediaWiki Special:Export / Special:Import）
 
@@ -91,14 +46,23 @@ wikikernel:
 `GET|POST /api.php?action=...`，让 pywikibot 风格的机器人脚本基本可以直接对接。
 
 - **通用参数**：`format=json`（默认）/`jsonfm`（HTML 预览）/`xml`（简化 XML）、`formatversion=1|2`、
-  `callback=name`（JSONP）、`curtimestamp=1`；错误统一为 MediaWiki 风格
+  `callback=name`（JSONP，仅 GET，始终匿名，不读取登录 Cookie 或返回会话令牌）、`curtimestamp=1`；错误统一为 MediaWiki 风格
   `{"error":{"code":"...","info":"..."}}`（HTTP 200，与 MediaWiki 一致）。
 - **认证（token 流程，与 MediaWiki 相同）**：
   1. `action=query&meta=tokens&type=login` 取 `logintoken`；
   2. `action=login&lgname=…&lgpassword=…&lgtoken=…`（缺 token 返回 `NeedToken`，token 错返回 `WrongToken`，
      密码错返回 `{"login":{"result":"Failed","reason":"wrongpassword"}}`）；失败走既有登录限流；
   3. `action=query&meta=tokens&type=csrf` 取 `csrftoken`，写操作都带 `token=`；
-  4. `action=logout` 退出。
+  4. 使用 **POST** `action=logout&token=…` 退出；缺失或错误令牌不改变登录状态。
+- **写请求**：`login`、`logout`、`edit`、`move`、`delete`、`protect`、`block`、`unblock`、
+  `upload`、`rollback` 必须使用 POST；GET 返回 `mustbeposted`。API 响应使用 `private, no-store`，避免共享缓存保存会话数据。
+- **身份断言**：支持 `assert=user|anon|bot` 和 `assertuser=用户名`；不符合时在执行动作前返回
+  `assertuserfailed` / `assertanonfailed` / `assertbotfailed` / `assertnameduserfailed`。
+- **布尔参数**：`nocreate`、`createonly`、`minor`、`notminor`、`bot`、`redirects`、`indexpageids`、
+  `noredirect`、`noemail`、`anononly` 按 MediaWiki 的参数存在性判断；包括空值或 `0` 在内，提供该参数即为真。
+  `notminor` 优先于 `minor`；`protect=1|0` 是项目保留的显式开关。
+- **编辑正文**：保留 `text` 首尾空白；`section=new` 可以创建新的讨论页；`baserevid` 非法时返回
+  `badinteger`，原页面已删除时返回 `pagedeleted`，不会悄悄重新创建。
 - **支持的动作**：
 
 | action | 说明 |
@@ -125,7 +89,15 @@ wikikernel:
   列表续传使用简单游标而非严格的服务端快照；`format=json|jsonfm|xml`（xml 为简化结构，与 MediaWiki 的单数元素名不完全一致）。
   未实现的动作会返回 `unknown_action`，参数缺失返回 `missingparam`。
 - **权限**：`query` 按访问规则过滤（无权查看的页面按 `missing` 处理，不泄露标题）；
-  `edit` 受封禁、保护、标题黑名单与滥用过滤器约束，与网页编辑完全一致。
+  `allimages` 同样按文件查看权限过滤；`edit` 受封禁、保护、标题黑名单与滥用过滤器约束。
+- **嵌入与缓存权限**：模板、TemplateStyles、Lua 模块及 `mw.title:getContent()` 的源内容必须允许
+  输出页面的所有读者查看；公开页无法借嵌入读取受限页，权限相同的私有页面之间仍能使用模板。
+  共享正文缓存键包含查看规则指纹，规则变更后不再命中旧权限下的渲染结果；Lua 编译与数据缓存还按输出读者组隔离。
+  预览接口同时检查输出标题的查看权限，不能借虚构的私有标题读取其它受限页面。
+  原图和缩略图采用 `private, no-cache`，以便再次请求时校验最新文件权限。
+- **同源写入**：`/api/*` 的写入请求比较协议、主机和有效端口（支持 IPv6）。TLS 终止于反向代理时，
+  通过 `server.forward-headers-strategy` 配置容器转发头处理，或开启既有的 `wikikernel.http.trust-proxy-headers=true`
+  并由可信代理覆盖 `X-Forwarded-Proto`；默认不信任客户端自行传入的转发头。
 
 ```bash
 # 示例：查内容（formatversion=2）
@@ -238,22 +210,3 @@ URL 模块示例 `小部件:MwJsApiUrl模块.js`。
 `oojs`（10.6 KB）+ `oojs-ui-core/-widgets/-toolbars/-windows`（≈272 KB JS）+ wikimediaui 主题 CSS（≈160 KB）
 + `oojs-ui.styles.icons-*` 图标包（18 个包、共 462 KB，**按需懒加载**，普通页面零开销）；
 验证用「真实 gadget 样例 + 自写演示页」。清单与体积见调研记录（`build/wk-vendor-probe/`）。
-
-## 页面预览（Popups / Page Previews）
-
-鼠标悬停在页面链接上约半秒（或键盘 Tab 聚焦）时，弹出目标页的预览浮层：标题、摘要与缩略图，
-底部有「前往页面 →」；移到浮层上不会消失，可以点进去。
-
-- **开关**：`features.popups`（**默认开启**），可在 `/init` 安装向导或 `特殊:权限配置 → 站点设置` 关闭；
-  关闭后页面不再加载 `/js/popups.js`（`WIKI_CONFIG.popups` 也会是 `false`，方便页面脚本判断）；
-- **数据**：`GET /api/page-preview?title=标题`（`PagePreviewApiController`，只读）——
-  摘要取页面**首段**：先做 `{{…}}` 模板展开、去掉 `'''''`/`[[…]]` 等标记与文件嵌入，再渲染成 HTML 去标签、
-  压缩空白，最后在标点处截断到约 **350 字**；缩略图取首段里第一张嵌入的图片（没有则看全文）；
-  重定向页面跟随一次（显示目标页内容，标题仍是被悬停的页面）；页面不存在 / 不可读 / 特殊页返回 404；
-- **前端**（`/js/popups.js`，仿 Popups 扩展）：悬停 500ms 才请求、结果按标题缓存（含「不可预览」负缓存，上限 50 条）；
-  浮层默认贴在链接下方，越界时自动上/左翻转；滚轮、Esc、点击、移开都会收起；
-  只处理**正文区 `#bodyContent`** 里指向站内页面的链接 —— 侧栏（导航 / 工具）、个人工具、页签、搜索框、
-  页脚等界面区域**不会**出现预览（与 MediaWiki Page Previews 一致）；
-  **红链（`.new`）、特殊页、`?action=`/`?oldid=` 等地址、`.no-preview` 类的链接不预览**；窄屏（<720px，触摸为主）不启用；
-- 回归测试 `PopupsTest`（摘要纯文本 / 只取首段 / 截断 / 缩略图 / 重定向 / 404 / 脚本随开关 / **只绑定正文区**）；
-  演示页面 `弹出预览演示页`、`弹出预览缩略图演示页`（首段带图片，预览有缩略图）。

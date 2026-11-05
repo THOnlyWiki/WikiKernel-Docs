@@ -1,13 +1,12 @@
 ---
-title: "Echo（通知）插件"
-sidebar_label: "Echo"
-sidebar_position: 31
-description: "仿 MediaWiki Echo 扩展的通知中心：顶栏铃铛（未读红点 / 下拉面板）+ 特殊:通知 + 通知偏好， 通知触发覆盖「用户讨论页被编辑 / @提及 / 编辑被回退 / 新用户欢迎」，kawaii-timeless 与 plain / vector / fallback 皮肤通用。"
+title: "通知"
+sidebar_label: "通知"
+description: "提供站内通知列表、未读计数和通知入口。"
 ---
 
-<!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->
-仿 MediaWiki **Echo** 扩展的通知中心：**顶栏铃铛（未读红点 / 下拉面板）+ 特殊:通知 + 通知偏好**，
-通知触发覆盖「用户讨论页被编辑 / @提及 / 编辑被回退 / 新用户欢迎」，**kawaii-timeless 与 plain / vector / fallback 皮肤通用**。
+# 通知
+
+提供站内通知列表、未读计数和通知入口。
 
 ## 功能一览
 
@@ -28,7 +27,8 @@ description: "仿 MediaWiki Echo 扩展的通知中心：顶栏铃铛（未读�
 | `revert` | 你的编辑被**回退**（`api.php?action=rollback`） | 被回退的编辑者（连续编辑一并算） |
 | `welcome` | 新用户注册（注册 2 天内首次访问时补发一次） | 新用户 |
 
-## 触发方式（core 没有「编辑完成」事件）
+
+## 触发方式
 
 - **讨论页 / 提及**：扩展点 `EditGuard`（保存前钩子，网页 / API / AI 提交都走）。core 的插件 AOP 桥
   会跳过 `@Transactional` 服务（`WikiPageService` 正是），因此这里**不能**用 AOP；`EditGuard` 在事务之外调用，
@@ -42,39 +42,6 @@ description: "仿 MediaWiki Echo 扩展的通知中心：顶栏铃铛（未读�
   老账号不会被补一发。
 - **邮件**：由上面三条路径在通知入库后异步触发（见「邮件通知」一节）。
 
-## 踩坑记录（改这个插件前先看）
-
-1. **插件 AOP 桥跳过 `@Transactional` Bean**（`PluginAopBridge#eligible` 里 `AopUtils.isAopProxy`）——
-   `WikiPageService` 的实现类正是事务代理，所以「AOP 切 editPage」不会生效（切了也不报错，只是永远不触发）。
-   编辑路径必须用 `EditGuard`；只有像 `ActionApiService`（非事务）这样的 Bean 才切得到。
-2. **不要在数据库事务里写通知**：`PluginDatabase` 用独立连接，SQLite 下会等外层写事务的锁 →
-   请求挂起（表现为「保存转圈不出结果」）。要么用 `EditGuard`（事务之外），要么 `afterCommit`。
-3. **SMTP 发送不能在请求线程里同步做**（超时上限 15 秒）：插件用单线程 daemon 执行器异步发。
-4. **kawaii-timeless 皮肤会清空 `#personal-extra li a` 里的 `span`、并给「两个 span 的链接」加红点**：
-   下拉面板若留在铃铛的 `<li>` 里，内容会被皮肤规则隐藏 / 装饰——面板在 JS 里挂到 `<body>` 下，
-   用 `position: fixed` 自己定位。
-5. **裸根部署（`urls.page-prefix: ""`）要保留 core 的顶层路由**：`/email/confirm`（邮箱确认）、
-   `/password/reset…`（重置密码）、`/init`、`/version`、`/render` 否则会被当成页面标题（404）——
-   已修进 `WikiUrlRewriteFilter#RESERVED_SEGMENTS`（core 测试 `WikiUrlRewriteFilterTest` 覆盖）。
-
-## 数据
-
-表 `wiki_notification` 属于插件自己（`EchoPlugin.schemaEntities()` 声明，core 的 Auto-DDL 建表）：
-
-| 列 | 说明 |
-| --- | --- |
-| `id` | 自增 |
-| `recipient_user_id` | 收件人 |
-| `type` | `edit-user-talk` / `mention` / `revert` / `welcome` |
-| `actor_user_id` | 触发者（欢迎 / 系统通知为 null） |
-| `page_title` / `revision_id` | 关联页面（可空） |
-| `comment` | 摘要 / 回退摘要 |
-| `read` / `read_at` | 已读标记与时间 |
-| `create_at` | 创建时间 |
-| `need_render` / `context_text` | 提及上下文（保留字段） |
-
-数据访问走 `common.service.PluginDatabase`（JDBC 桥）；用户 / 页面信息走 `common` 的桥
-（`UserStore` / `WikiPageStore` / `CurrentUser` / `AccessCheck` / `UserSettings`），不碰 core 的 Mapper。
 
 ## 邮件通知
 
@@ -92,20 +59,4 @@ description: "仿 MediaWiki Echo 扩展的通知中心：顶栏铃铛（未读�
 插件不直接依赖 core 的邮件类。邮件里的站点链接用当前请求的 scheme+host（反代 / 多域名场景可用站点设置
 `echo.email.baseUrl` 覆盖）。
 
-## 前端资源
-
-`static/plugins/echo/echo.css` + `echo.js`，由 `EchoHeadProvider`（`HtmlHeadProvider`，siteWide）注入，
-**不依赖任何皮肤的私有 CSS / JS**：
-
-- 铃铛图标：kawaii 皮肤自带 Material Icons（`#personal-extra .echo-entry .echo-bell::before` 用 `notifications` 连字），
-  其余皮肤按普通个人工具链接显示，未读数用数字徽标；
-- 下拉面板由 JS **挂到 `<body>` 下**（`position: fixed` + 按铃铛位置计算坐标）：kawaii 皮肤对
-  `#personal-extra li a span` 有「隐藏文字 + 未读数红点」规则，面板留在 `li` 里会被清空内容；
-- 未读轮询：页面可见时每 60 秒 `GET /api/echo/unread-count`。
-
-## 测试
-
-- `plugin/echo/src/test/java/.../EchoNotifierMentionTest.java`：提及提取（`[[用户:名]]` / `@名` / 去重 / 非用户链接）、
-  讨论页标题解析、转义与站内路径。
-- 端到端（本机）：注册探针账号 → 讨论页 / 提及编辑 → 回退 → 铃铛红点、面板、通知页、过滤、已读、
-  plain 皮肤铃铛（脚本见会话记录，不入库）。
+[源码与开发说明](https://github.com/THOnlyWiki/WikiKernel/tree/master/plugin/echo)

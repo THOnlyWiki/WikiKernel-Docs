@@ -1,17 +1,12 @@
 ---
-title: "hit-counters（MediaWiki HitCounters 扩展移植）"
-sidebar_label: "hit-counters"
-sidebar_position: 15
-description: "页面浏览计数 —— 对应 MediaWiki 的 HitCounters 扩展（第三方扩展）。"
+title: "访问计数"
+sidebar_label: "访问计数"
+description: "记录页面浏览次数，并提供读取计数的页面功能。"
 ---
 
-<!-- 此页由 scripts/sync-plugins.mjs 从 plugin/README.md 生成，请修改主仓库 README。 -->
-页面浏览计数 —— 对应 MediaWiki 的 [HitCounters](https://www.mediawiki.org/wiki/Extension:HitCounters)
-扩展（第三方扩展）。
+# 访问计数
 
-- 插件 id：`hit-counters`；模块：`:plugin:hit-counters`；入口类 `HitCountersPlugin`；
-- 本地化文案：`HitCountersMessages` + `i18n/messages.properties` / `messages_en.properties`；
-- 构建：`.\gradlew.bat :plugin:hit-counters:build`。
+记录页面浏览次数，并提供读取计数的页面功能。
 
 ## 功能
 
@@ -23,6 +18,7 @@ description: "页面浏览计数 —— 对应 MediaWiki 的 HitCounters 扩展�
 | 特殊页 | `PopularPagesSpecialPage` = `特殊:最多浏览`（按浏览量排序，可显示页面 ID / 字节数） |
 | 安装向导 | `HitCountersSetup`（`SetupStep`）：`/init` 的插件 tab 里配置下面的各项 |
 | 数据 | 计数落页面属性（`common.service.PagePropertyStore`：`addToInt` / `sumInt` / `listByIntDesc`） |
+
 
 ## 配置（`LocalSettings.yaml` → `wikikernel.plugins.settings.hit-counters`）
 
@@ -43,12 +39,10 @@ wikikernel:
 描述文件里**没有**声明 `plugin.featureKey`：本插件没有单一的 `features.*` 站点开关，开关粒度就是上面的设置项
 （`disabled: true` 等价于关闭浏览计数）。
 
+
 ## 与 MediaWiki 的差异
 
 - `$wgHitcounterUpdateFreq` 的批量合并未实现（每次浏览立即 +1）；
 - 页脚计数显示在正文末尾；`特殊:统计` 的浏览区块未加。
 
-## 相关文档
-
-- [配置与数据](/docs/administration/configuration-reference)（`LocalSettings.yaml`、站点设置、页面属性）
-- [插件开发与运行](/docs/development/plugin-development)（`PageViewHook` / `MagicWord` / `SetupStep` 扩展点）
+[源码与开发说明](https://github.com/THOnlyWiki/WikiKernel/tree/master/plugin/hit-counters)
