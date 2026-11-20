@@ -312,6 +312,18 @@
     "source": "https://github.com/THOnlyWiki/WikiKernel/tree/master/plugin/rename-user"
   },
   {
+    "id": "external-auth-discord",
+    "name": "Discord 第三方登录",
+    "title": "Discord 第三方登录",
+    "description": "使用 Discord 授权登录 WikiKernel，或在「特殊:参数设置 → 第三方授权」绑定和解绑 Discord 账号。",
+    "category": "social",
+    "categoryLabel": "用户与社交",
+    "status": "available",
+    "distribution": true,
+    "docs": "/docs/plugins/external-auth-discord",
+    "source": "https://github.com/THOnlyWiki/WikiKernel/tree/master/plugin/external-auth-discord"
+  },
+  {
     "id": "external-auth-github",
     "name": "GitHub 登录",
     "title": "GitHub 登录",
@@ -322,6 +334,18 @@
     "distribution": true,
     "docs": "/docs/plugins/external-auth-github",
     "source": "https://github.com/THOnlyWiki/WikiKernel/tree/master/plugin/external-auth-github"
+  },
+  {
+    "id": "external-auth-google",
+    "name": "Google 第三方登录",
+    "title": "Google 第三方登录",
+    "description": "使用 Google 授权登录 WikiKernel，或在「特殊:参数设置 → 第三方授权」绑定和解绑 Google 账号。",
+    "category": "social",
+    "categoryLabel": "用户与社交",
+    "status": "available",
+    "distribution": true,
+    "docs": "/docs/plugins/external-auth-google",
+    "source": "https://github.com/THOnlyWiki/WikiKernel/tree/master/plugin/external-auth-google"
   },
   {
     "id": "external-auth-qq",

@@ -266,3 +266,14 @@ core 侧接线：
 ## 扩展点与示例
 
 扩展接口及平台服务见[扩展点与服务](/docs/development/extensions)。已提供的功能及配置见[插件目录](/plugins)，不需要在新插件中复制它们。
+
+### 开发第三方登录插件
+
+在插件中实现 `common.externalauth.ExternalAuthProvider`，并在 `WikiPlugin#onStart` 注册该扩展点。core 负责登录、注册、绑定和解绑，也会根据 provider 的 ID 和设置键生成配置表单与按钮。提供方回调使用 `/auth/{providerId}/callback`。
+
+- 有授权码和用户资料接口的平台可以继承 `OAuth2ProfileProvider`。用固定的授权、令牌、资料端点，声明平台要求的最小 scope，再实现令牌和身份响应的解析。Google 与 Discord 是完整示例。
+- 使用 `ExternalAuthUser.subject` 返回平台稳定的账号 ID。Google 使用 `sub`，Discord 使用用户 `id`。昵称和邮箱可变，应用只把它们用于显示或新账号资料。
+- 继承该基类的插件使用 S256 PKCE。core 为当前会话生成并保存 verifier，provider 只在授权请求中收到 challenge，随后在令牌交换时收到 verifier 和最初的回调地址。现有 provider 可以继续实现两个参数的授权和交换方法。
+- 只在提供方确认且平台能证明归属时返回已验证邮箱。遇到授权失败、缺失账号 ID 或格式不符的响应时终止登录。日志只应保留排查所需的状态，Client Secret、授权码和访问令牌留在服务端。
+
+可以用固定 JSON 样本测试身份识别，用 core 的测试验证回调状态、PKCE 和绑定到当前会话。部署步骤见[第三方登录配置](/docs/administration/third-party-login)。
