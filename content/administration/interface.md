@@ -32,6 +32,23 @@ description: "界面与系统页面"
 
 支持 Wikitext 和语言子页，例如 `WikiKernel:Sitenotice/en`。留空或只写 `-` 可关闭相应消息；未创建这些 WikiKernel 配置页时，会尝试对应的 MediaWiki 同名页。
 
+## 系统消息
+
+打开 `特殊:所有消息`（英文别名 `Special:AllMessages`）可以查看 core 和已加载插件注册的消息。
+页面支持前缀、语言和自定义状态筛选，以及分页。已修改的消息分两行显示默认文本与当前文本；源码按文本展示。
+
+点击名称会打开对应界面页的编辑器。以 `common.search` 为例，中文覆盖页是 `WikiKernel:Common.search`，英文覆盖页是 `WikiKernel:Common.search/en`。
+未创建覆盖页时，编辑器会载入默认文本。保存后沿用普通 Wiki 页的修订历史和权限检查；删除覆盖页后恢复资源默认值。
+已有的 `MediaWiki:` 同名消息页也能读取，`WikiKernel:` 页优先。已被隐藏或当前用户不可读的覆盖内容不会通过消息列表或消息 API 泄露。
+
+`Sidebar`、站点公告和编辑提示仍沿用各自已有的配置规则。侧边栏条目指向 `wikikernel.sidebar.page` 配置的页面，不另建一套侧栏配置。
+CSS 和 JavaScript 继续使用下文的样式、脚本页面，执行权限不由消息列表改变。
+
+也可使用 `/api.php?action=query&meta=allmessages` 读取消息，支持 `ammessages`、`amprefix`、`amfilter`、`amlang`、`amcustomised`、`amfrom`、`amto` 和 `amincludedefault`。
+
+页面行为参考 MediaWiki 的 [SpecialAllMessages](https://doc.wikimedia.org/mediawiki-core/1.46.0/php/SpecialAllMessages_8php_source.html) 和 [AllMessagesTablePager](https://doc.wikimedia.org/mediawiki-core/REL1_39/php/AllMessagesTablePager_8php_source.html)。
+列表使用本项目实际存在的消息键，不填充未安装扩展的消息。
+
 ## CSS 和 JavaScript
 
 全站样式使用 `WikiKernel:Common.css`，全站脚本使用 `WikiKernel:Common.js`。皮肤专用页面为 `WikiKernel:<皮肤 id>.css` 和 `.js`，id 使用皮肤实际标识。
