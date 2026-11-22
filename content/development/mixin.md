@@ -145,7 +145,7 @@ public final class WikiTitlesExtrasMixin {
 - **只支持启动期生效**：Mixin 配置和 Mixin 类在 JVM 启动时注册；带 Mixin 的插件不能热替换。
   修改这类插件后必须重启。普通插件仍可通过 `POST /api/plugins/reload` 动态装卸。
 - **Mixin 插件入口类和普通 helper 类不要放在 Mixin 包的子目录里**。Mixin 会把配置里的
-  `package` 视为保留包：入口类 / 普通类被直接加载时可能抛
+  `package` 视为保留包：入口类 / 普通类被直接加载时会抛出
   `IllegalClassLoadError`。入口类和 helper 放在插件自己的普通包，只有 `@Mixin`
   类单独放 `...mixin` 包。
 - **目标类必须是应用类加载器能加载的类**：core、common、Spring / 第三方库、插件类都可以；
@@ -156,8 +156,8 @@ public final class WikiTitlesExtrasMixin {
   如果初始化失败，启动日志会明确打印 `[WikiKernel/MixinExtras] 初始化失败`，普通 Mixin 仍会继续工作。
 - **侧为 SERVER**：Mixin 配置里的 `mixins` / `server` 列表会生效；`client` 列表不会。
   服务端项目没有 obfuscation / refmap，启动器已关闭 refmap，直接写普通 Java 类名即可。
-- **运行时为 Java 21+**（项目 toolchain 为 21）；如果目标类由更高版本 JDK 编译，Mixin 可能打印
-  class version 警告，建议插件自身也按 Java 21 编译，或在配置里设置合适的
+- **运行时为 Java 21+**（项目 toolchain 为 21）；若目标类由更高版本 JDK 编译，Mixin 会输出
+  class version 警告。插件自身须按 Java 21 编译，或在配置中指定对应的
   `compatibilityLevel`。
 - **安全**：Mixin 可以执行任意字节码，权限等同于修改整个服务端。`plugins/` 目录只应放可信插件；
   不要为了兼容不可信插件而授予写插件目录的权限。

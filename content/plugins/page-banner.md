@@ -23,7 +23,7 @@ description: "按页面设置或文件池配置，在标题上方显示横幅图
 - 图片来源优先级：`{{PAGEBANNER:…}}` > 逐页配置 > 图片池（按轮换机制）；
   文件不存在或不是图片时不显示横幅；
 - 样式：`static/plugins/page-banner/page-banner.css`（原 core `base.css` 的 `.page-banner*` 区块），
-  本页**可能**显示横幅时由 `PageDisplayHook.headItems` 注入到 `<head>`。
+  当本页满足横幅展示条件时由 `PageDisplayHook.headItems` 注入到 `<head>`。
 
 
 ## 与 MediaWiki 原版的差异

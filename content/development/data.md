@@ -183,7 +183,7 @@ Java 类型默认推断：`String` → `VARCHAR(255)`（length > 4000 时 `TEXT`
 转换工具通常会把 SQLite 的 `TEXT` 日期列原样映射成 MySQL / MariaDB 的 `LONGTEXT`
 （SQLSwitch 默认就是这样；`--infer-dates` 也不会处理带 `T` 和纳秒的 ISO 字符串）。
 直接把这份 DDL 导入 MariaDB 后，时间列不是 `DATETIME`，MariaDB JDBC 在
-`getObject(..., LocalDateTime.class)` 时可能报
+`getObject(..., LocalDateTime.class)` 时会报
 `value '2026-…T…' (BLOB) cannot be decoded as ZoneDateTime`。
 
 WikiKernel 的 MyBatis 层已注册兼容读取器（`LenientLocalDateTimeTypeHandler`），能读取

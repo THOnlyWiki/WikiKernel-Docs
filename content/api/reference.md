@@ -43,7 +43,7 @@ wikikernel:
 ## MediaWiki 兼容 API（`/api.php`）
 
 除了自己的 REST API（`/api/*`，见各功能章节），本项目还提供 **MediaWiki Action API 兼容层**：
-`GET|POST /api.php?action=...`，让 pywikibot 风格的机器人脚本基本可以直接对接。
+`GET|POST /api.php?action=...`，支持 pywikibot 风格的机器人脚本直接对接。
 
 - **通用参数**：`format=json`（默认）/`jsonfm`（HTML 预览）/`xml`（简化 XML）、`formatversion=1|2`、
   `callback=name`（JSONP，仅 GET，始终匿名，不读取登录 Cookie 或返回会话令牌）、`curtimestamp=1`；错误统一为 MediaWiki 风格
@@ -117,7 +117,7 @@ curl -b cookies.txt -d 'action=edit&title=沙盒&text=内容&token=…' http://l
   `action=raw` 直接返回源码，并支持 `ctype`（例如 `ctype=text/javascript`）；`curid` 会先解析成标题。
 - **`/load.php?modules=...`**：ResourceLoader 风格的最小兼容层。`site.styles`、`user.styles` 返回本站站点 CSS
   （`Wiki.css` + `WikiKernel:Common.css` + 当前皮肤 CSS），`site`、`user` 返回站点 JS；未知模块返回注释占位，
-  不返回 404，避免旧页面因单个模块失败而中断。`only=styles|scripts` 与 `skin=` 会尽量遵循。
+  不返回 404，避免旧页面因单个模块失败而中断。支持按 `only=styles|scripts` 与 `skin=` 参数过滤。
 - **`/thumb.php?f=文件名&w=宽度`**：按需生成 WebP 缩略图并从磁盘流式输出；宽度会限制为不超过原图（不放大），
   生成结果缓存在 `thumbnail/<storedName>/w<宽度>.webp`。生成队列上限由
   `wikikernel.thumbnail.queue-limit` 控制（默认 2），队列满时请求阻塞等待而不是直接拒绝。

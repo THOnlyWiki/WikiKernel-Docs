@@ -137,7 +137,7 @@ proxy_set_header X-Forwarded-Proto $scheme;
 
 ## 不要提交的东西
 
-`LocalSettings.yaml` 可能包含数据库密码、OAuth Secret、SMTP 密码。不要提交到 Git。
+`LocalSettings.yaml` 包含数据库密码、OAuth Secret、SMTP 密码等敏感凭据，严禁提交到 Git。
 
 建议只在服务器上保留，并设置文件权限：
 

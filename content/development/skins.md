@@ -94,7 +94,7 @@ Timeless（糖果风）把 `--wiki-button-primary-*` 映射到站点的 `--color
   logo 区块 10em×160px（从页面顶端起，探出渐变区，侧栏因此首个分组从 176px 处开始）、
   侧栏中缝 176px（= MediaWiki 宽屏的 11em）、个人工具 `top: 6px`、内容框内边距 `1.25em 1.5em 1.5em`；
   可打印版（`?printable=yes`）不上移，移动端（≤719px）纵向堆叠时同样取消上移；
-- **Fallback**（`fallback`，不可禁用）：极简无装饰布局，Vector 被禁用或配置指向不可用皮肤时兜底，保证站点可开；
+- **Fallback**（`fallback`，不可禁用）：极简无装饰布局，Vector 被禁用或配置指向不可用皮肤时自动回退，确保站点正常访问；
   但功能与 Vector 对齐：**用户栏**（登录 / 注册 / 参数设置 / **外观** / 私信 / 贡献 / 退出——保证能切回其它皮肤）、
   搜索框、页面页签（阅读 / 编辑 / 查看历史 / 移动 / 保护）与 `WikiKernel:Sidebar` 侧边导航，
   样式只依赖 `/css/base.css`（`.skin-fallback` 少量补全）；
@@ -115,7 +115,7 @@ Timeless（糖果风）把 `--wiki-button-primary-*` 映射到站点的 `--color
   - **代码页面**：`.js` / `.css` / `.ts` / `.tsx` 只读高亮预览 + 带补全的编辑器（CodeMirror 本地内置，不依赖 CDN）；
     **默认只有「界面管理员」能编辑 / 创建 / 移动 CSS / JS 页面**（仿 MediaWiki 的 interface-admin，
     可在 `特殊:权限配置` 用访问规则覆盖，但全局 `*` / 前缀规则不会绕过，只有针对单个页面的**精确规则**才能放行）；
-    阅读模式的预览是**可拖选 / Ctrl+A/C 复制的只读代码块**（光标由 CSS 隐藏，右上角另有「复制」按钮兜底）；
+    阅读模式的预览是**可拖选 / Ctrl+A/C 复制的只读代码块**（光标由 CSS 隐藏，右上角另配有「复制」按钮）；
     页面顶部显示「清除浏览器缓存」提示（仿 MediaWiki:Clearyourcache，含 Firefox/Safari/Chrome/Edge 快捷键）；
     `.ts` / `.tsx` 还可以在服务端编译成 JavaScript 当脚本执行，见下文「[TypeScript 与 TypeScript 代码页面](#typescript-与-typescript-代码页面)」；
 - 统一组件样式在 `/css/base.css`（`:root` 变量 + `.wiki-form` / `.wiki-button` / `.wikitable` / `.wiki-warning` 等），

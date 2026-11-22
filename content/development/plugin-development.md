@@ -229,7 +229,7 @@ core 侧接线：
 - `core/plugin/aop/PluginAopRegistry`（`@Component`）：把所有插件 `CoreAopHook.advisors()` 汇总成不可变快照，
   Advisor 顺序 = 插件加载顺序 → 插件内声明顺序；插件卸载（`PluginManager.stop()`）后快照自动变空；
 - `core/plugin/aop/PluginAopBridge`（`@Component`，`SmartInstantiationAwareBeanPostProcessor`）：
-  在 **Bean 创建阶段**给可能被切中的 core Bean 套一层 `ProxyFactory` 桥接代理
+  在 **Bean 创建阶段**为符合切面匹配条件的 core Bean 建立一层 `ProxyFactory` 桥接代理
   （`PluginAdviceBridge`：一个「活点切面」，调用时现取插件 Advisor），
   因此插件在应用就绪后才加载，**切面对已经注入到其它 Bean 的引用同样生效**（core 全部用构造器注入）；
 - 插件子容器里也会挂一份同样的桥（`PluginSpringContextFactory.registerAopBridge`），

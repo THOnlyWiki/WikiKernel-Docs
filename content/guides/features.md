@@ -18,7 +18,7 @@ description: "使用手册"
 
 ## 插件功能
 
-评论、用户资料、私信、审核和通知需要对应插件。站点未安装或未启用插件时，相关入口可能不会显示。
+评论、用户资料、私信、审核和通知依赖对应插件。未安装或未启用插件时，系统不展示相关入口。
 
 - [评论](/docs/plugins/comments)与[用户资料、好友和私信](/docs/plugins/social-profile)
 - [编辑审核](/docs/plugins/moderation)与[滥用过滤器](/docs/plugins/abuse-filter)
